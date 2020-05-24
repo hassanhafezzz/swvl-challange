@@ -1,0 +1,9 @@
+@value utils: '../../styles/utils.css';
+
+.container {
+  composes: container from utils;
+}
+
+.divider {
+  composes: divider from utils;
+}

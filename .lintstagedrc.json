@@ -1,0 +1,4 @@
+{
+  "*.{js,jsx,md,html,css}": ["prettier --write"],
+  "*.{png,jpeg,jpg,gif,svg}": ["imagemin-lint-staged"]
+}

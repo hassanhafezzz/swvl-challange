@@ -1,0 +1,31 @@
+@value utils: '../../../styles/utils.css';
+
+.media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.body p {
+  margin: 0;
+}
+
+.body p + p {
+  margin-top: 10px;
+}
+
+.title {
+  font-weight: var(--font-bold);
+}

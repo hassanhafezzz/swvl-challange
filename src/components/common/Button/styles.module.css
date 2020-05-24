@@ -1,0 +1,23 @@
+/* @value utils: '../../../styles/utils.css'; */
+
+.button {
+  cursor: pointer;
+  font-size: var(--h5-size);
+  text-transform: capitalize;
+  color: var(--color-white);
+  text-align: center;
+  background-color: var(--color-light-secondary);
+  line-height: 1;
+  min-width: 150px;
+  border-radius: 500px;
+  padding: 14px 20px;
+  border: 1px solid transparent;
+  border-width: 0;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.button:hover,
+.button:focus {
+  background-color: var(--color-dark-secondary);
+}

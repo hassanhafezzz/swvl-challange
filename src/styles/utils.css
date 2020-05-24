@@ -1,0 +1,45 @@
+@value small-bp: max-width: 576px;
+@value medium-bp: max-width: 768px;
+@value large-bp: max-width: 992px;
+@value extra-large-bp: max-width: 1200px;
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--color-gray-100);
+  border: none;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1170px;
+  }
+}

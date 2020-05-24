@@ -1,0 +1,27 @@
+.loader {
+  height: 36px;
+  width: 36px;
+  display: inline-block;
+  position: relative;
+  padding-left: 10px;
+}
+
+.wheel {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto;
+  border: 3px solid var(--color-primary);
+  border-radius: 50%;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  position: absolute;
+  right: 0;
+  animation: spin 575ms infinite linear;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+    will-change: contents;
+  }
+}
