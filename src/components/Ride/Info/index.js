@@ -55,8 +55,8 @@ export default function Info() {
         </div>
         <div className={cx('route')}>
           <div className={cx('route-desc')}>
-            <p>6th of Octobar</p>
-            <p>Maadi old (Sarayat)</p>
+            <p>Almaza</p>
+            <p>Talat harb axis</p>
           </div>
         </div>
         <div className={cx('extra-info')}>
