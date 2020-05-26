@@ -1,23 +1,53 @@
-/* @value utils: '../../../styles/utils.css'; */
+@value utils: '../../../styles/utils.css';
+@value medium-bp from utils;
 
 .button {
   cursor: pointer;
-  font-size: var(--h5-size);
   text-transform: capitalize;
-  color: var(--color-white);
-  background-color: var(--color-dark-secondary);
   text-align: center;
   line-height: 1;
-  min-width: 150px;
-  border-radius: 500px;
-  padding: 14px 20px;
   border: 1px solid transparent;
   border-width: 0;
   user-select: none;
   transition: all 0.2s ease-in-out;
 }
 
-.button:hover,
-.button:focus {
+.primary {
+  font-size: var(--h5-size);
+  color: var(--color-white);
+  background-color: var(--color-dark-secondary);
+  min-width: 150px;
+  border-radius: 500px;
+  padding: 14px 20px;
+}
+
+.primary:hover,
+.primary:focus {
   background-color: var(--color-light-secondary);
+}
+
+.neutral {
+  font-size: var(--h5-size);
+  color: var(--color-white);
+  background-color: var(--color-gray-500);
+  min-width: 150px;
+  border-radius: 500px;
+  padding: 14px 20px;
+}
+
+.neutral:hover,
+.neutral:focus {
+  background-color: var(--color-gray-300);
+}
+
+.icon {
+  background-color: transparent;
+}
+
+@media (medium-bp) {
+  .primary,
+  .neutral {
+    min-width: 120px;
+    padding: 14px;
+  }
 }

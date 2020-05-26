@@ -2,8 +2,8 @@
 
 :root {
   --font-family: 'Roboto', sans-serif;
-  --font-bold: 700;
-  --font-normal: 400;
+  --bold: 700;
+  --normal: 400;
   --color-primary: #ff003c;
   --color-light-secondary: #9800f7;
   --color-dark-secondary: #8300d5;

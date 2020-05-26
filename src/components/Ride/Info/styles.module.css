@@ -63,7 +63,7 @@
 }
 
 .driver-name {
-  font-weight: var(--font-bold);
+  font-weight: var(--bold);
   margin: 5px 0;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .route-desc p {
-  font-weight: var(--font-bold);
+  font-weight: var(--bold);
   margin: 0;
 }
 

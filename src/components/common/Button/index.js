@@ -4,20 +4,29 @@ import Loader from '../Loader';
 import styles from './styles.module.css';
 
 const cx = classNames.bind(styles);
+
+export const BUTTON_VARIANT = {
+  PRIMARY: 'primary',
+  SECONDARY: 'secondary',
+  NEUTRAL: 'neutral',
+  ICON: 'icon',
+};
+
 export default function Button({
   children,
   onClick,
   loading,
   disabled,
-  type,
+  className,
+  variant,
   ...rest
 }) {
   return (
     <button
       onClick={onClick}
-      className={cx('button')}
+      className={cx('button', variant, className)}
       disabled={disabled}
-      type={type}
+      type="button"
       {...rest}
     >
       {children}

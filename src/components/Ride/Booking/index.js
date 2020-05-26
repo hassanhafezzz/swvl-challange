@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.css';
 import Avatar from '../../common/Avatar';
-import Button from '../../common/Button';
+import Button, { BUTTON_VARIANT } from '../../common/Button';
+import Modal from '../../common/Modal';
 import driver from '../../../img/driver.jpg';
 
 const cx = classNames.bind(styles);
 
-export default function Booking() {
+const Booking = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const toggleModal = () => setModalOpen(!isModalOpen);
+  const closeModal = () => setModalOpen(false);
+
   return (
     <>
+      <Modal
+        title="Add a new booking 👨🏻‍💻"
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        actionText="Add"
+        action={() => console.log('TODO //')}
+      >
+        placeholder for form
+      </Modal>
       <div className={cx('heading')}>
         <h3 className={cx('title')}>
           Bookings{' '}
@@ -17,11 +31,15 @@ export default function Booking() {
             🔖
           </span>
         </h3>
-        <Button onClick={console.log('TODO')}>New Book</Button>
+        <Button variant={BUTTON_VARIANT.PRIMARY} onClick={toggleModal}>
+          New Book
+        </Button>
       </div>
       <div className={cx('wrapper')}>
         <Avatar img={driver} name="hi" tripsNumber={12} />
       </div>
     </>
   );
-}
+};
+
+export default Booking;
