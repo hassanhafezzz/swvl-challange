@@ -1,0 +1,18 @@
+.wrapper {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.radio {
+  cursor: pointer;
+  margin-right: 10px;
+  background-color: var(--color-dark-secondary);
+}
+
+.label {
+  text-transform: capitalize;
+  font-size: var(--small-paragraph);
+  font-weight: var(--bold);
+}

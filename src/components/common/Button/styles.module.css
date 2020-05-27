@@ -51,3 +51,10 @@
     padding: 14px;
   }
 }
+
+.button[disabled],
+.button[disabled]:hover,
+.button[disabled]:focus {
+  cursor: not-allowed;
+  background-color: var(--color-gray-300);
+}

@@ -7,8 +7,14 @@ import Button, { BUTTON_VARIANT } from '../Button';
 const cx = classNames.bind(styles);
 const modalRoot = document.getElementById('modal');
 
-const Modal = ({ isOpen, title, closeModal, action, actionText, children }) => {
+const Modal = ({ isOpen, title, closeModal, children }) => {
   const el = document.createElement('div');
+
+  const esc = (e) => {
+    if (e.keyCode === 27) {
+      closeModal();
+    }
+  };
 
   useEffect(() => {
     modalRoot.appendChild(el);
@@ -18,10 +24,13 @@ const Modal = ({ isOpen, title, closeModal, action, actionText, children }) => {
     };
   }, [el]);
 
-  const handleClick = () => {
-    action();
-    closeModal();
-  };
+  useEffect(() => {
+    document.addEventListener('keydown', esc, false);
+
+    return () => {
+      document.removeEventListener('keydown', esc, false);
+    };
+  }, []);
 
   return (
     isOpen &&
@@ -39,23 +48,6 @@ const Modal = ({ isOpen, title, closeModal, action, actionText, children }) => {
             />
           </div>
           {children}
-          <hr className={cx('divider')} />
-          <div className={cx('actions')}>
-            <Button
-              variant={BUTTON_VARIANT.NEUTRAL}
-              onClick={closeModal}
-              type="button"
-            >
-              close
-            </Button>
-            <Button
-              variant={BUTTON_VARIANT.PRIMARY}
-              onClick={handleClick}
-              type="button"
-            >
-              {actionText}
-            </Button>
-          </div>
         </div>
       </div>,
       el,

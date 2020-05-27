@@ -18,3 +18,11 @@
   align-items: center;
   justify-content: flex-start;
 }
+
+.form-label {
+  margin: 20px 0 0;
+  display: flex;
+  text-transform: capitalize;
+  font-size: var(--small-paragraph);
+  font-weight: var(--bold);
+}

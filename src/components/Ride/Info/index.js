@@ -16,19 +16,13 @@ const cx = classNames.bind(styles);
 
 const Info = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const toggleModal = () => setModalOpen(!isModalOpen);
+  const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
   const now = new Date();
   return (
     <>
-      <Modal
-        title="Start ride ⚡"
-        isOpen={isModalOpen}
-        closeModal={closeModal}
-        actionText="start"
-        action={() => console.log('TODO //')}
-      >
+      <Modal title="Start ride ⚡" isOpen={isModalOpen} closeModal={closeModal}>
         placeholder for form
       </Modal>
 
@@ -47,7 +41,7 @@ const Info = () => {
             </p>
           </div>
 
-          <Button variant={BUTTON_VARIANT.PRIMARY} onClick={toggleModal}>
+          <Button variant={BUTTON_VARIANT.PRIMARY} onClick={openModal}>
             Start Ride
           </Button>
         </div>
