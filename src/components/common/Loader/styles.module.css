@@ -10,7 +10,7 @@
   width: 36px;
   height: 36px;
   margin: 0 auto;
-  border: 3px solid var(--color-primary);
+  border: 3px solid var(--color-gray-350);
   border-radius: 50%;
   border-left-color: transparent;
   border-right-color: transparent;

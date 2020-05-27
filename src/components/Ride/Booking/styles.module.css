@@ -1,7 +1,14 @@
 @value utils: '../../../styles/utils.css';
+@value large-bp from utils;
+@value small-bp from utils;
+
+.container {
+  margin: 25px 0 10px;
+  padding-bottom: 50px;
+}
 
 .heading {
-  margin: 25px 0 10px;
+  margin: 5px 0 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,10 +20,23 @@
 }
 
 .wrapper {
+  margin: 25px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px 20px;
+}
+
+.fill-bookings-container {
   margin-top: 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+}
+
+.fill-bookings-container p {
+  font-size: var(--h4-size);
+  font-weight: var(--bold);
 }
 
 .form-label {
@@ -25,4 +45,16 @@
   text-transform: capitalize;
   font-size: var(--small-paragraph);
   font-weight: var(--bold);
+}
+
+@media (large-bp) {
+  .wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (small-bp) {
+  .wrapper {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }

@@ -41,7 +41,7 @@ const Info = () => {
             </p>
           </div>
 
-          <Button variant={BUTTON_VARIANT.PRIMARY} onClick={openModal}>
+          <Button variant={BUTTON_VARIANT.SECONDARY} onClick={openModal}>
             Start Ride
           </Button>
         </div>

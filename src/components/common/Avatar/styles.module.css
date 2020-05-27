@@ -1,21 +1,24 @@
 @value utils: '../../../styles/utils.css';
 
 .media {
+  padding: 20px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  background-color: var(--color-gray-100);
+  border-radius: 5px;
 }
 
 .image {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
 }
 
 .body {
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
+  margin-left: 15px;
 }
 
 .body p {
@@ -23,9 +26,10 @@
 }
 
 .body p + p {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .title {
+  font-size: var(--h5-size);
   font-weight: var(--bold);
 }

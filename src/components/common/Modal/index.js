@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames/bind';
 import styles from './styles.module.css';
@@ -9,13 +9,6 @@ const modalRoot = document.getElementById('modal');
 
 const Modal = ({ isOpen, title, closeModal, children }) => {
   const el = document.createElement('div');
-
-  const esc = (e) => {
-    if (e.keyCode === 27) {
-      closeModal();
-    }
-  };
-
   useEffect(() => {
     modalRoot.appendChild(el);
 
@@ -24,13 +17,22 @@ const Modal = ({ isOpen, title, closeModal, children }) => {
     };
   }, [el]);
 
+  const esc = useCallback(
+    (e) => {
+      if (e.keyCode === 27) {
+        closeModal();
+      }
+    },
+    [closeModal],
+  );
+
   useEffect(() => {
     document.addEventListener('keydown', esc, false);
 
     return () => {
       document.removeEventListener('keydown', esc, false);
     };
-  }, []);
+  }, [esc]);
 
   return (
     isOpen &&

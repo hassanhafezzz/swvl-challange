@@ -7,6 +7,7 @@ import styles from './styles.module.css';
 const cx = classNames.bind(styles);
 
 const RadioField = ({ id, name, label, value, checked }) => {
+  // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
   const { setValue } = helpers;
 

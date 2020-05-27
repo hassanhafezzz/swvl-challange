@@ -20,7 +20,7 @@
 
 .time {
   margin: 0;
-  color: var(--color-gray-300);
+  color: var(--color-gray-500);
 }
 
 .widgets {
@@ -68,7 +68,7 @@
 }
 
 .rating-icon {
-  color: var(--color-gray-300);
+  color: var(--color-gray-500);
   font-weight: var(--font-normal);
   margin: 0 5px;
 }
@@ -76,7 +76,7 @@
 .rating-icon svg {
   width: 13px;
   height: 13px;
-  fill: var(--color-gray-300);
+  fill: var(--color-gray-500);
 }
 
 .bus-type {
@@ -96,7 +96,7 @@
   background: linear-gradient(
     0deg,
     var(--color-light-secondary) 0%,
-    var(--color-primary) 100%
+    var(--color-light-primary) 100%
   );
   border-radius: 4px;
 }

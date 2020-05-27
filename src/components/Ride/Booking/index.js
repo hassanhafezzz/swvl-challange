@@ -1,21 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.css';
+import { Context } from '../../../store';
+import { fillBookings } from '../../../store/actions';
 import Avatar from '../../common/Avatar';
 import Button, { BUTTON_VARIANT } from '../../common/Button';
 import Modal from '../../common/Modal';
 import UserForm from './UserForm';
-import driver from '../../../img/driver.jpg';
 
 const cx = classNames.bind(styles);
 
 const Booking = () => {
+  const [state, dispatch] = useContext(Context);
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
+  const renderBooking = ({
+    id,
+    name,
+    image,
+    tripsCount,
+    pickupStation,
+    dropOffStation,
+  }) => (
+    <Avatar
+      key={id}
+      img={image}
+      name={name}
+      tripsCount={tripsCount}
+      pickupStation={pickupStation}
+      dropOffStation={dropOffStation}
+    />
+  );
+
+  const { bookings } = state;
+  const shouldDisableAddButton = bookings.length >= 12;
+
   return (
-    <>
+    <div className={cx('container')}>
       <Modal
         title="Add a new booking 👨🏻‍💻"
         isOpen={isModalOpen}
@@ -30,14 +53,37 @@ const Booking = () => {
             🔖
           </span>
         </h3>
-        <Button variant={BUTTON_VARIANT.PRIMARY} onClick={openModal}>
+        <Button
+          disabled={shouldDisableAddButton}
+          variant={BUTTON_VARIANT.SECONDARY}
+          onClick={openModal}
+        >
           New Book
         </Button>
       </div>
-      <div className={cx('wrapper')}>
-        <Avatar img={driver} name="hi" tripsNumber={12} />
-      </div>
-    </>
+
+      {bookings && bookings.length > 0 ? (
+        <div className={cx('wrapper')}>{bookings.map(renderBooking)}</div>
+      ) : (
+        <div className={cx('fill-bookings-container')}>
+          <p>
+            <span role="img" aria-label="sparks">
+              ✨
+            </span>
+            Or just fill all 12 spots at once{' '}
+            <span role="img" aria-label="sparks">
+              ✨
+            </span>
+          </p>
+          <Button
+            variant={BUTTON_VARIANT.PRIMARY}
+            onClick={() => dispatch(fillBookings())}
+          >
+            fill all
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -85,7 +85,7 @@ const UserForm = ({ closeModalForm }) => {
             value="credit"
           />
           <Button
-            variant={BUTTON_VARIANT.PRIMARY}
+            variant={BUTTON_VARIANT.SECONDARY}
             disabled={!isValid}
             type="submit"
           >

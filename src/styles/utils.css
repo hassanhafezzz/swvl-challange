@@ -21,7 +21,7 @@
 
 .divider {
   height: 1px;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-gray-300);
   border: none;
   margin: 0;
 }

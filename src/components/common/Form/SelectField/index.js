@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 
 const cx = classNames.bind(styles);
 
-const SelectField = ({ id, name, label, children }) => {
+const SelectField = ({ id, name, label, children, ...rest }) => {
   const [field, meta] = useField(name);
 
   return (
@@ -20,6 +20,7 @@ const SelectField = ({ id, name, label, children }) => {
 
       <select
         {...field}
+        {...rest}
         id={id}
         name={name}
         className={cx(

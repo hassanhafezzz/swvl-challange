@@ -15,7 +15,7 @@
 .primary {
   font-size: var(--h5-size);
   color: var(--color-white);
-  background-color: var(--color-dark-secondary);
+  background-color: var(--color-dark-primary);
   min-width: 150px;
   border-radius: 500px;
   padding: 14px 20px;
@@ -23,13 +23,27 @@
 
 .primary:hover,
 .primary:focus {
+  background-color: var(--color-light-primary);
+}
+
+.secondary {
+  font-size: var(--h5-size);
+  color: var(--color-white);
+  background-color: var(--color-dark-secondary);
+  min-width: 150px;
+  border-radius: 500px;
+  padding: 14px 20px;
+}
+
+.secondary:hover,
+.secondary:focus {
   background-color: var(--color-light-secondary);
 }
 
 .neutral {
   font-size: var(--h5-size);
   color: var(--color-white);
-  background-color: var(--color-gray-500);
+  background-color: var(--color-gray-700);
   min-width: 150px;
   border-radius: 500px;
   padding: 14px 20px;
@@ -37,7 +51,7 @@
 
 .neutral:hover,
 .neutral:focus {
-  background-color: var(--color-gray-300);
+  background-color: var(--color-gray-500);
 }
 
 .icon {
@@ -56,5 +70,5 @@
 .button[disabled]:hover,
 .button[disabled]:focus {
   cursor: not-allowed;
-  background-color: var(--color-gray-300);
+  background-color: var(--color-gray-500);
 }
