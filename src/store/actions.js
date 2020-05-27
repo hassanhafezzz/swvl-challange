@@ -1,4 +1,8 @@
-import { ADD_BOOKING, FILL_ALL_BOOKINGS } from './constants';
+import { INITIALIZE_APP, ADD_BOOKING, FILL_ALL_BOOKINGS } from './constants';
+
+export const initializeApp = () => {
+  return { type: INITIALIZE_APP };
+};
 
 export const fillBookings = () => {
   return {

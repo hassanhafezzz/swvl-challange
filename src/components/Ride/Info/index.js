@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import classNames from 'classnames/bind';
 import Button, { BUTTON_VARIANT } from '../../common/Button';
 import Modal from '../../common/Modal';
+import { Context } from '../../../store';
 import { ReactComponent as Star } from '../../../img/star.svg';
 import { ReactComponent as Dollar } from '../../../img/dollar.svg';
 import { ReactComponent as Pin } from '../../../img/pin.svg';
-import driver from '../../../img/driver.jpg';
-import bus from '../../../img/ford-bus.png';
 
 import { getFormattedDate, getFormattedTime } from '../../../utils';
 
@@ -18,6 +17,9 @@ const Info = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
+
+  const [state] = useContext(Context);
+  const { trip } = state;
 
   const now = new Date();
   return (
@@ -50,35 +52,41 @@ const Info = () => {
             <div className={cx('media')}>
               <img
                 className={cx('driver-image')}
-                src={driver}
-                alt="driver saaid"
+                src={trip.driver.image}
+                alt={trip.driver.name}
               />
-              <img className={cx('bus-image')} src={bus} alt="ford minibus" />
+              <img
+                className={cx('bus-image')}
+                src={trip.driver.bus.image}
+                alt="ford minibus"
+              />
             </div>
             <div className={cx('body')}>
               <p className={cx('driver-name')}>
-                Herbert Patton
+                {trip.driver.name}
                 <span className={cx('rating-icon')}>
-                  <Star title="star" /> 5.0
+                  <Star title="star" /> {trip.driver.rating}
                 </span>
               </p>
-              <p className={cx('bus-type')}>Ford Transit - GA 213</p>
+              <p className={cx('bus-type')}>
+                {trip.driver.bus.model} - {trip.driver.bus.plate}
+              </p>
             </div>
           </div>
           <div className={cx('route')}>
             <div className={cx('route-desc')}>
-              <p>Almaza</p>
-              <p>Talat harb axis</p>
+              <p>{trip.start}</p>
+              <p>{trip.end}</p>
             </div>
           </div>
           <div className={cx('extra-info')}>
             <p>
               <Pin />
-              Trip Distance: 23 KM
+              Trip Distance: {trip.distance}
             </p>
             <p>
               <Dollar />
-              Trip Base Fare: 45 EGP
+              Trip Base Fare: {trip.fare}
             </p>
           </div>
         </div>
