@@ -1,7 +1,21 @@
-import { INITIALIZE_APP, FILL_ALL_BOOKINGS, ADD_BOOKING } from './constants';
+import {
+  INITIALIZE_APP,
+  FILL_ALL_BOOKINGS,
+  ADD_BOOKING,
+  UPDATE_BOOKER_STATUS,
+  RESET_TRIP,
+  START_TRIP,
+  END_TRIP,
+  TRIP_IN_PROGRESS,
+  TRIP_COMPLETED,
+  UPDATE_ROUTE,
+  UPDATE_STATION_INFO,
+  UPDATE_CURRENT_DISTANCE,
+} from './constants';
+
 import initialState from './initialState';
 import users from '../data/users';
-import routes from '../data/routes';
+import route from '../data/route';
 import { getRandomArbitrary } from '../utils';
 
 const reducer = (state, action) => {
@@ -14,23 +28,41 @@ const reducer = (state, action) => {
     case ADD_BOOKING:
       return {
         ...state,
-        bookings: [...state.bookings, action.payload],
+        bookings: [...state.bookings, { ...action.payload, status: 'booked' }],
       };
+
+    case UPDATE_BOOKER_STATUS: {
+      const lastVisitedStation = action.payload;
+      const computedBooking = state.bookings.map((booking) => {
+        if (booking.pickupStation === lastVisitedStation.name) {
+          const status = ['completed', 'missed', 'cancelled'][
+            Math.floor(Math.random() * 3)
+          ];
+          return { ...booking, status };
+        }
+        return booking;
+      });
+      return {
+        ...state,
+        bookings: computedBooking,
+      };
+    }
 
     case FILL_ALL_BOOKINGS: {
       const bookings = users.map(({ trips_count: tripsCount, ...user }) => {
-        const pickupStationIndex = getRandomArbitrary(0, routes.length - 2);
+        const pickupStationIndex = getRandomArbitrary(0, route.length - 2);
         const dropOffStationIndex = getRandomArbitrary(
           pickupStationIndex + 1,
-          routes.length - 1,
+          route.length - 1,
         );
 
-        const pickupStation = routes[pickupStationIndex].stationName;
-        const dropOffStation = routes[dropOffStationIndex].stationName;
+        const pickupStation = route[pickupStationIndex].name;
+        const dropOffStation = route[dropOffStationIndex].name;
         const paymentMethod = ['cash', 'credit'][Math.floor(Math.random() * 2)];
 
         return {
           ...user,
+          status: 'booked',
           pickupStation,
           tripsCount,
           dropOffStation,
@@ -41,6 +73,64 @@ const reducer = (state, action) => {
       return {
         ...state,
         bookings,
+      };
+    }
+
+    case START_TRIP: {
+      const now = new Date();
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          startedAt: now,
+          duration: action.payload,
+          status: TRIP_IN_PROGRESS,
+        },
+      };
+    }
+
+    case END_TRIP:
+      return {
+        ...state,
+        trip: {
+          ...state.trip,
+          status: TRIP_COMPLETED,
+        },
+      };
+
+    case RESET_TRIP:
+      return {
+        ...initialState,
+      };
+
+    case UPDATE_ROUTE: {
+      return {
+        ...state,
+        route: action.payload,
+      };
+    }
+    case UPDATE_CURRENT_DISTANCE: {
+      return {
+        ...state,
+        currentDistance: action.payload,
+      };
+    }
+
+    case UPDATE_STATION_INFO: {
+      const lastVisitedStation = action.payload;
+      const computedRoute = state.route.map((station) => {
+        if (station.id === lastVisitedStation.id) {
+          const status = ['early', 'on time', 'late'][
+            Math.floor(Math.random() * 3)
+          ];
+          return { ...station, status };
+        }
+        return station;
+      });
+
+      return {
+        ...state,
+        route: computedRoute,
       };
     }
 

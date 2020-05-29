@@ -135,6 +135,10 @@
   width: 14px;
 }
 
+.start-button {
+  margin-top: 15px;
+}
+
 @media (medium-bp) {
   .widgets {
     flex-direction: column;

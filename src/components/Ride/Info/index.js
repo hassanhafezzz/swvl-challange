@@ -2,7 +2,10 @@ import React, { useState, useContext } from 'react';
 import classNames from 'classnames/bind';
 import Button, { BUTTON_VARIANT } from '../../common/Button';
 import Modal from '../../common/Modal';
+import RideForm from './RideForm';
 import { Context } from '../../../store';
+import { TRIP_IN_PROGRESS, TRIP_COMPLETED } from '../../../store/constants';
+import { resetTrip } from '../../../store/actions';
 import { ReactComponent as Star } from '../../../img/star.svg';
 import { ReactComponent as Dollar } from '../../../img/dollar.svg';
 import { ReactComponent as Pin } from '../../../img/pin.svg';
@@ -18,14 +21,16 @@ const Info = () => {
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const [state] = useContext(Context);
-  const { trip } = state;
+  const [state, dispatch] = useContext(Context);
+  const { bookings, trip } = state;
 
-  const now = new Date();
+  const shouldDisableStartButton =
+    bookings.length <= 0 || trip.status === TRIP_IN_PROGRESS;
+
   return (
     <>
       <Modal title="Start ride ⚡" isOpen={isModalOpen} closeModal={closeModal}>
-        placeholder for form
+        <RideForm closeModalForm={closeModal} />
       </Modal>
 
       <div className={cx('container')}>
@@ -37,15 +42,31 @@ const Info = () => {
                 🚐
               </span>
             </h3>
-            <p className={cx('time')}>
-              <span>{getFormattedDate(now)}, </span>
-              <span>{getFormattedTime(now)}</span>
-            </p>
+            {trip.startedAt ? (
+              <p className={cx('time')}>
+                <span>{getFormattedDate(trip.startedAt)}, </span>
+                <span>{getFormattedTime(trip.startedAt)}</span>
+              </p>
+            ) : null}
           </div>
-
-          <Button variant={BUTTON_VARIANT.SECONDARY} onClick={openModal}>
-            Start Ride
-          </Button>
+          {trip.status === TRIP_COMPLETED ? (
+            <Button
+              variant={BUTTON_VARIANT.SECONDARY}
+              onClick={() => {
+                dispatch(resetTrip());
+              }}
+            >
+              Reset
+            </Button>
+          ) : (
+            <Button
+              disabled={shouldDisableStartButton}
+              variant={BUTTON_VARIANT.SECONDARY}
+              onClick={openModal}
+            >
+              Start Ride
+            </Button>
+          )}
         </div>
         <div className={cx('widgets')}>
           <div className={cx('driver')}>
@@ -82,11 +103,11 @@ const Info = () => {
           <div className={cx('extra-info')}>
             <p>
               <Pin />
-              Trip Distance: {trip.distance}
+              Trip Distance: {trip.distance / 1000} KM
             </p>
             <p>
               <Dollar />
-              Trip Base Fare: {trip.fare}
+              Trip Base Fare: {trip.fare} EGP
             </p>
           </div>
         </div>

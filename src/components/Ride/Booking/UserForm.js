@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Formik, Form } from 'formik';
 import classNames from 'classnames/bind';
-import { AddBooking } from '../../../store/actions';
+import { addBooking } from '../../../store/actions';
 import { Context } from '../../../store';
 import styles from './styles.module.css';
 import InputField from '../../common/Form/InputField';
@@ -10,11 +10,11 @@ import RadioField from '../../common/Form/RadioField';
 import Button, { BUTTON_VARIANT } from '../../common/Button';
 import usersMock from '../../../data/users';
 import { isLink } from '../../../utils';
-import routes from '../../../data/routes';
+import route from '../../../data/route';
 
 const cx = classNames.bind(styles);
 
-const stations = routes.map((route) => route.stationName);
+const stations = route.map((point) => point.name);
 
 const UserForm = ({ closeModalForm }) => {
   const user = usersMock[Math.floor(Math.random() * usersMock.length)];
@@ -32,7 +32,7 @@ const UserForm = ({ closeModalForm }) => {
   const [_, dispatch] = useContext(Context);
 
   const onSubmit = (values) => {
-    dispatch(AddBooking(values));
+    dispatch(addBooking(values));
     closeModalForm();
   };
 
@@ -67,7 +67,7 @@ const UserForm = ({ closeModalForm }) => {
       validate={validate}
       onSubmit={onSubmit}
     >
-      {({ isSubmitting, isValid, values, setFieldValue }) => {
+      {({ isValid, values, setFieldValue }) => {
         const dropOffStations = stations.slice(
           stations.indexOf(values.pickupStation) + 1,
         );

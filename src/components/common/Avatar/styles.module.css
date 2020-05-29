@@ -9,6 +9,15 @@
   border-radius: 5px;
 }
 
+.media.missed,
+.media.cancelled {
+  background-color: var(--color-bg-red);
+}
+
+.media.completed {
+  background-color: var(--color-bg-green);
+}
+
 .image {
   width: 80px;
   height: 80px;

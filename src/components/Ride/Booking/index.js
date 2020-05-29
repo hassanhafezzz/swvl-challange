@@ -19,6 +19,7 @@ const Booking = () => {
   const renderBooking = ({
     id,
     name,
+    status,
     image,
     tripsCount,
     pickupStation,
@@ -28,6 +29,7 @@ const Booking = () => {
       key={id}
       img={image}
       name={name}
+      status={status}
       tripsCount={tripsCount}
       pickupStation={pickupStation}
       dropOffStation={dropOffStation}

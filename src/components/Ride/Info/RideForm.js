@@ -1,50 +1,55 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Formik, Form } from 'formik';
 import classNames from 'classnames/bind';
 import styles from './styles.module.css';
+import {
+  LATENCY_EARLY,
+  LATENCY_ON_TIME,
+  LATENCY_LATE,
+} from '../../../store/constants';
+
+import { startTrip } from '../../../store/actions';
+import { Context } from '../../../store';
 import InputField from '../../common/Form/InputField';
 import SelectField from '../../common/Form/SelectField';
-import RadioField from '../../common/Form/RadioField';
 import Button, { BUTTON_VARIANT } from '../../common/Button';
-import usersMock from '../../../data/users';
-import routes from '../../../data/routes';
 
 const cx = classNames.bind(styles);
 
-const UserForm = ({ closeModalForm }) => {
-  const user = usersMock[Math.floor(Math.random() * usersMock.length)];
-  const stations = routes.map((route) => route.stationName);
-
+const RideForm = ({ closeModalForm }) => {
   const initialValues = {
-    name: user.name,
-    image: user.image,
-    station: '',
-    paymentMethod: 'cash',
+    duration: 3,
+    latency: LATENCY_ON_TIME,
   };
 
+  const [_, dispatch] = useContext(Context);
+
   const onSubmit = (values) => {
-    console.log(values);
+    let { duration } = values;
+    const { latency } = values;
+
+    switch (latency) {
+      case LATENCY_EARLY:
+        duration -= 0.5;
+        break;
+      case LATENCY_LATE:
+        duration += 0.5;
+        break;
+      default:
+        break;
+    }
+    dispatch(startTrip(duration));
     closeModalForm();
   };
 
   const validate = (values) => {
     const errors = {};
-    if (!values.name) {
-      errors.name = 'Who is booking the ticket?';
+    if (!values.duration) {
+      errors.duration = 'What is the expected time for the trip?';
     }
 
-    if (!values.station) {
-      errors.station = 'Where should we pick him?';
-    }
-
-    if (!values.image) {
-      errors.image = 'If you could provide an image that would be great';
-    } else if (
-      !/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i.test(
-        values.image,
-      )
-    ) {
-      errors.image = "That's not a valid link";
+    if (!values.latency) {
+      errors.latency = 'Is the driver running late?';
     }
 
     return errors;
@@ -56,40 +61,28 @@ const UserForm = ({ closeModalForm }) => {
       validate={validate}
       onSubmit={onSubmit}
     >
-      {({ isSubmitting, isValid, values }) => (
+      {({ isValid }) => (
         <Form>
-          <InputField type="text" name="name" id="name" label="name" />
-
-          <InputField type="url" name="image" id="image" label="image" />
-
-          <SelectField name="station" id="station" label="station">
-            <option disabled selected label="Please select a station" />
-            {stations.map((station) => (
-              <option key={station} value={station} label={station} />
-            ))}
+          <InputField
+            type="number"
+            name="duration"
+            id="duration"
+            label="Trip duration in minutes"
+          />
+          <SelectField name="latency" id="latency" label="Expected latency">
+            <option disabled selected label="Is the driver running late?" />
+            <option label="arriving early" value={LATENCY_EARLY} />
+            <option label="arriving on time" value={LATENCY_ON_TIME} />
+            <option label="arriving late" value={LATENCY_LATE} />
           </SelectField>
 
-          <p className={cx('form-label')}>payment method</p>
-          <RadioField
-            label="cash"
-            name="paymentMethod"
-            id="cash"
-            checked={values.paymentMethod === 'cash'}
-            value="cash"
-          />
-          <RadioField
-            label="credit"
-            name="paymentMethod"
-            id="credit"
-            checked={values.paymentMethod === 'credit'}
-            value="credit"
-          />
           <Button
+            className={cx('start-button')}
             variant={BUTTON_VARIANT.SECONDARY}
             disabled={!isValid}
             type="submit"
           >
-            Add
+            Yalla
           </Button>
         </Form>
       )}
@@ -97,4 +90,4 @@ const UserForm = ({ closeModalForm }) => {
   );
 };
 
-export default UserForm;
+export default RideForm;

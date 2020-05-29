@@ -1,0 +1,20 @@
+.congrats {
+  margin: 10px 0;
+  font-size: var(--h1-size);
+}
+
+.subtext {
+  margin: 0px 0 40px;
+  color: var(--color-gray-700);
+}
+
+.buttons-container {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons-container button + button {
+  margin-left: 15px;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, memo } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames/bind';
 import styles from './styles.module.css';
@@ -7,7 +7,7 @@ import Button, { BUTTON_VARIANT } from '../Button';
 const cx = classNames.bind(styles);
 const modalRoot = document.getElementById('modal');
 
-const Modal = ({ isOpen, title, closeModal, children }) => {
+const Modal = memo(({ isOpen, title, closeModal, children }) => {
   const el = document.createElement('div');
   useEffect(() => {
     modalRoot.appendChild(el);
@@ -40,7 +40,7 @@ const Modal = ({ isOpen, title, closeModal, children }) => {
       <div className={cx('wrapper')}>
         <div className={cx('content')}>
           <div className={cx('header')}>
-            <p className={cx('title')}>{title}</p>
+            {title ? <p className={cx('title')}>{title}</p> : null}
             <Button
               onClick={closeModal}
               className={cx('close-icon')}
@@ -55,6 +55,6 @@ const Modal = ({ isOpen, title, closeModal, children }) => {
       el,
     )
   );
-};
+});
 
 export default Modal;

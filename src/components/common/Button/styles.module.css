@@ -60,6 +60,7 @@
 
 @media (medium-bp) {
   .primary,
+  .secondary,
   .neutral {
     min-width: 120px;
     padding: 14px;

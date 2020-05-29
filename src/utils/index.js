@@ -20,3 +20,40 @@ export const isLink = (link) => {
     link,
   );
 };
+
+export const computeDistanceBetween = (from, to) => {
+  return window.google.maps.geometry.spherical.computeDistanceBetween(
+    new window.google.maps.LatLng(from.lat, from.lng),
+    new window.google.maps.LatLng(to.lat, to.lng),
+  );
+};
+
+export const computeRouteDistancesAndETAs = (route, fullDistance, duration) => {
+  const speed = fullDistance / (duration * 60);
+  const from = {
+    lat: route[0].lat,
+    lng: route[0].lng,
+  };
+
+  const computedRoute = route.map((coord) => {
+    const to = {
+      lat: coord.lat,
+      lng: coord.lng,
+    };
+
+    const distance = computeDistanceBetween(from, to);
+    const eta = distance / speed;
+
+    return { ...coord, distance, eta };
+  });
+
+  return computedRoute;
+};
+
+export const formatETA = (eta) => {
+  const time = Math.floor(eta);
+  if (time >= 60) {
+    return `${Math.floor(time / 60)} min`;
+  }
+  return `${time} sec`;
+};
