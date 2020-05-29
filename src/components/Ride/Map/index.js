@@ -25,9 +25,8 @@ import {
   updateBookerStatus,
 } from '../../../store/actions';
 
-import bus from './BusIconPath';
-import oval from '../../../img/oval.png';
-import coloredOval from '../../../img/light-oval.png';
+import bus from './busIconPath';
+import mapStyles from './mapStyles.json';
 import {
   computeRouteDistancesAndETAs,
   computeDistanceBetween,
@@ -68,8 +67,6 @@ const Map = () => {
   const resetBusPosition = () => {
     if (line) {
       const icons = line.get('icons');
-      icons[0].offset = '0%';
-      line.set('icons', icons);
       icons[0].offset = '0%';
       line.set('icons', icons);
     }
@@ -131,7 +128,7 @@ const Map = () => {
       fillOpacity: 1,
       strokeColor: '#000',
       strokeWeight: 2,
-      scale: 0.35,
+      scale: 0.4,
       rotation: 180,
       anchor: new window.google.maps.Point(30, 50),
     };
@@ -180,70 +177,60 @@ const Map = () => {
   /*= == rendering UI components === */
   const renderIcon = (i) => {
     if (i === 0 || i === route.length - 1) {
-      return coloredOval;
+      return {
+        path: window.google.maps.SymbolPath.CIRCLE,
+        scale: 8,
+        fillColor: '#000',
+        fillOpacity: 1,
+        strokeWeight: 0,
+      };
     }
-    return oval;
+    return {
+      path: window.google.maps.SymbolPath.CIRCLE,
+      scale: 4,
+      fillColor: '#ee4149',
+      fillOpacity: 1,
+      strokeWeight: 0,
+    };
   };
 
-  const renderIconSize = (i) => {
-    if (i === 0 || i === route.length - 1) {
-      return new window.google.maps.Size(15, 15);
-    }
-    return new window.google.maps.Size(8, 8);
-  };
-
-  const renderMarker = ({ id, lat, lng }, i) => {
-    const nextStation = getNextStation();
+  const renderMarker = ({ id, lat, lng, eta, distance }, i) => {
+    // const nextStation = getNextStation();
 
     return (
-      <Marker
-        position={{ lat, lng }}
-        key={id}
-        icon={{
-          url: renderIcon(i),
-          scaledSize: renderIconSize(i),
-        }}
-      >
-        {trip.status === TRIP_IN_PROGRESS &&
-        nextStation.lat === lat &&
-        nextStation.lng === lng ? (
+      <Marker position={{ lat, lng }} key={id} icon={renderIcon(i)}>
+        {trip.status === TRIP_IN_PROGRESS && distance > currentDistance ? (
           <InfoBox
-            pixelOffset={new window.google.maps.Size(-95, 100)}
             options={{
+              pixelOffset: new window.google.maps.Size(-55, 0),
               closeBoxURL: '',
               enableEventPropagation: true,
             }}
           >
             <div
               style={{
-                position: 'relative',
+                backgroundColor: '#fff',
+                padding: '5px 10px',
+                borderRadius: '10px 0px 10px 10px',
               }}
             >
               <div
                 style={{
-                  backgroundColor: '#fff',
-                  padding: '5px 10px',
-                  borderRadius: '5px 10px 10px 10px',
+                  marginBottom: '1px',
+                  fontSize: '5px',
+                  fontColor: '#7e7e7e',
                 }}
               >
-                <div
-                  style={{
-                    marginBottom: '2px',
-                    fontSize: '10px',
-                    fontColor: '#7e7e7e',
-                  }}
-                >
-                  ETA
-                </div>
-                <div
-                  style={{
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    fontColor: '#222222',
-                  }}
-                >
-                  {formatETA(nextStation.eta)}
-                </div>
+                ETA
+              </div>
+              <div
+                style={{
+                  fontSize: '10px',
+                  fontWeight: 'bold',
+                  fontColor: '#222222',
+                }}
+              >
+                {formatETA(eta)}
               </div>
             </div>
           </InfoBox>
@@ -260,7 +247,7 @@ const Map = () => {
           <span role="img" aria-label="congrats">
             🎉
           </span>{' '}
-          Congrats
+          Congratulations
         </h4>
         <p className={cx('subtext')}>The trip has been completed</p>
 
@@ -293,6 +280,9 @@ const Map = () => {
           lat: centerPoint.lat - 0.002,
           lng: centerPoint.lng + 0.02,
         }}
+        defaultOptions={{
+          styles: mapStyles,
+        }}
       >
         {route.map(renderMarker)}
 
@@ -300,7 +290,7 @@ const Map = () => {
           path={route}
           geodesic
           options={{
-            strokeColor: '#8300D5',
+            strokeColor: '#ee4149',
             strokeWeight: 2,
           }}
         />
