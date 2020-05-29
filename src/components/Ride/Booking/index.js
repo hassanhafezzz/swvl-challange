@@ -40,7 +40,7 @@ const Booking = () => {
   const shouldDisableAddButton = bookings.length >= 12;
 
   return (
-    <div className={cx('container')}>
+    <>
       <Modal
         title="Add a new booking 👨🏻‍💻"
         isOpen={isModalOpen}
@@ -48,44 +48,46 @@ const Booking = () => {
       >
         <UserForm closeModalForm={closeModal} />
       </Modal>
-      <div className={cx('heading')}>
-        <h3 className={cx('title')}>
-          Bookings{' '}
-          <span role="img" aria-label="bus">
-            🔖
-          </span>
-        </h3>
-        <Button
-          disabled={shouldDisableAddButton}
-          variant={BUTTON_VARIANT.SECONDARY}
-          onClick={openModal}
-        >
-          New Book
-        </Button>
-      </div>
-
-      {bookings && bookings.length > 0 ? (
-        <div className={cx('wrapper')}>{bookings.map(renderBooking)}</div>
-      ) : (
-        <div className={cx('fill-bookings-container')}>
-          <p>
-            <span role="img" aria-label="sparks">
-              ✨
+      <section className={cx('container')}>
+        <div className={cx('heading')}>
+          <h3 className={cx('title')}>
+            Bookings{' '}
+            <span role="img" aria-label="bus">
+              🔖
             </span>
-            Or just fill all 12 spots at once{' '}
-            <span role="img" aria-label="sparks">
-              ✨
-            </span>
-          </p>
+          </h3>
           <Button
-            variant={BUTTON_VARIANT.PRIMARY}
-            onClick={() => dispatch(fillBookings())}
+            disabled={shouldDisableAddButton}
+            variant={BUTTON_VARIANT.SECONDARY}
+            onClick={openModal}
           >
-            fill all
+            New Book
           </Button>
         </div>
-      )}
-    </div>
+
+        {bookings && bookings.length > 0 ? (
+          <div className={cx('wrapper')}>{bookings.map(renderBooking)}</div>
+        ) : (
+          <div className={cx('fill-bookings-container')}>
+            <p>
+              <span role="img" aria-label="sparks">
+                ✨
+              </span>
+              Or just fill all 12 spots at once{' '}
+              <span role="img" aria-label="sparks">
+                ✨
+              </span>
+            </p>
+            <Button
+              variant={BUTTON_VARIANT.PRIMARY}
+              onClick={() => dispatch(fillBookings())}
+            >
+              fill all
+            </Button>
+          </div>
+        )}
+      </section>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import { TRIP_NOT_STARTED } from '../store/constants';
+import { TRIP_NOT_STARTED } from '../constants';
 import route from './route';
 import driver from '../img/driver.jpg';
 import bus from '../img/ford-bus.png';

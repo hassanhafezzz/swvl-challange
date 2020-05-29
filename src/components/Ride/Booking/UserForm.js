@@ -10,6 +10,7 @@ import RadioField from '../../common/Form/RadioField';
 import Button, { BUTTON_VARIANT } from '../../common/Button';
 import usersMock from '../../../data/users';
 import { isLink } from '../../../utils';
+import { PAYMENT_METHODS } from '../../../constants';
 import route from '../../../data/route';
 
 const cx = classNames.bind(styles);
@@ -26,7 +27,7 @@ const UserForm = ({ closeModalForm }) => {
     tripsCount: user.trips_count,
     pickupStation: '',
     dropOffStation: '',
-    paymentMethod: 'cash',
+    paymentMethod: PAYMENT_METHODS.CASH,
   };
 
   const [_, dispatch] = useContext(Context);
@@ -112,15 +113,15 @@ const UserForm = ({ closeModalForm }) => {
               label="cash"
               name="paymentMethod"
               id="cash"
-              checked={values.paymentMethod === 'cash'}
-              value="cash"
+              checked={values.paymentMethod === PAYMENT_METHODS.CASH}
+              value={PAYMENT_METHODS.CASH}
             />
             <RadioField
               label="credit"
               name="paymentMethod"
               id="credit"
-              checked={values.paymentMethod === 'credit'}
-              value="credit"
+              checked={values.paymentMethod === PAYMENT_METHODS.CREDIT}
+              value={PAYMENT_METHODS.CREDIT}
             />
             <Button
               variant={BUTTON_VARIANT.SECONDARY}

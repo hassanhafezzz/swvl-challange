@@ -8,7 +8,7 @@ import {
   UPDATE_ROUTE,
   UPDATE_BOOKER_STATUS,
   UPDATE_CURRENT_DISTANCE,
-} from './constants';
+} from '../constants';
 
 // Booking
 export const fillBookings = () => {

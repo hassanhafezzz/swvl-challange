@@ -3,6 +3,7 @@
 
 .button {
   cursor: pointer;
+  text-decoration: none;
   text-transform: capitalize;
   text-align: center;
   line-height: 1;

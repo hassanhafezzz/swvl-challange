@@ -1,1 +1,39 @@
-/* @value utils: '../../styles/utils.css'; */
+@value utils: '../../styles/utils.css';
+
+.container {
+  composes: container from utils;
+}
+
+.heading {
+  margin: 15px 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  margin: 5px 0 10px;
+  font-size: var(--h1-size);
+}
+
+.wrapper {
+  margin: 50px auto;
+  max-width: 600px;
+}
+
+.section {
+  text-align: center;
+}
+
+.section-header {
+  font-weight: var(--bold);
+  font-size: var(--h3-size);
+}
+
+.divider {
+  composes: divider from utils;
+}
+
+.divider.large {
+  margin: 60px 0;
+}

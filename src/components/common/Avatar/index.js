@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.css';
+import { BOOKING_STATUS } from '../../../constants';
 
 const cx = classNames.bind(styles);
 
@@ -15,10 +16,10 @@ export default function Avatar({
   return (
     <div
       className={cx('media', {
-        booked: status === 'booked',
-        missed: status === 'missed',
-        cancelled: status === 'cancelled',
-        completed: status === 'completed',
+        booked: status === BOOKING_STATUS.BOOKED,
+        missed: status === BOOKING_STATUS.MISSED,
+        cancelled: status === BOOKING_STATUS.CANCELLED,
+        completed: status === BOOKING_STATUS.COMPLETED,
       })}
     >
       <img className={cx('image')} src={img} alt={name} />

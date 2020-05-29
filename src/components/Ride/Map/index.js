@@ -15,7 +15,7 @@ import styles from './styles.module.css';
 import Modal from '../../common/Modal';
 import Button, { BUTTON_VARIANT } from '../../common/Button';
 import { Context } from '../../../store';
-import { TRIP_IN_PROGRESS, TRIP_NOT_STARTED } from '../../../store/constants';
+import { TRIP_IN_PROGRESS, TRIP_NOT_STARTED } from '../../../constants';
 import {
   endTrip,
   updateRoute,
@@ -60,8 +60,25 @@ const Map = () => {
     openModal();
   };
 
-  const getVisitedStations = (distance) => {
-    return route.filter((coord) => coord.distance < distance);
+  const getVisitedStations = (distance, calculatedRoute) => {
+    return calculatedRoute.filter((coord) => coord.distance <= distance);
+  };
+
+  const calcFullDistance = () => {
+    const from = {
+      lat: route[0].lat,
+      lng: route[0].lng,
+    };
+    const to = {
+      lat: route[route.length - 1].lat,
+      lng: route[route.length - 1].lng,
+    };
+    return computeDistanceBetween(from, to);
+  };
+
+  const calcRouteInfo = () => {
+    const fullDistance = calcFullDistance();
+    return computeRouteDistancesAndETAs(route, fullDistance, trip.duration);
   };
 
   const resetBusPosition = () => {
@@ -72,7 +89,7 @@ const Map = () => {
     }
   };
 
-  const moveBus = (fullDistance) => {
+  const moveBus = (fullDistance, calculatedRoute) => {
     let visitedStationsCount = 0;
     // In real world app I would properly add another function to check if the difference between the current position and the new position returning from the backend and if it's too big then skip animation and position the bus into the new position, and wouldn't use setInterval [used for the fixed time]
 
@@ -84,7 +101,8 @@ const Map = () => {
       let currentOffset = (distance / fullDistance) * 100;
 
       // update bookings status and station arrival status
-      const visitedStations = getVisitedStations(distance);
+      const visitedStations = getVisitedStations(distance, calculatedRoute);
+
       if (visitedStations.length > visitedStationsCount) {
         visitedStationsCount = visitedStations.length;
         const lastVisitedStation = visitedStations[visitedStations.length - 1];
@@ -129,7 +147,7 @@ const Map = () => {
       anchor: new window.google.maps.Point(30, 50),
     };
 
-    const path = new window.google.maps.Polyline({
+    const p = new window.google.maps.Polyline({
       path: route,
       geodesic: true,
       icons: [
@@ -143,7 +161,7 @@ const Map = () => {
       map: mapInstance,
     });
 
-    return path;
+    return p;
   };
 
   const renderIcon = (i) => {
@@ -216,23 +234,11 @@ const Map = () => {
   /*= == run whenever the trip status changed === */
   useEffect(() => {
     if (trip.status === TRIP_IN_PROGRESS) {
-      const from = {
-        lat: route[0].lat,
-        lng: route[0].lng,
-      };
-      const to = {
-        lat: route[route.length - 1].lat,
-        lng: route[route.length - 1].lng,
-      };
-      const fullDistance = computeDistanceBetween(from, to);
-      const calculatedRoute = computeRouteDistancesAndETAs(
-        route,
-        fullDistance,
-        trip.duration,
-      );
-
+      const fullDistance = calcFullDistance();
+      const calculatedRoute = calcRouteInfo();
       dispatch(updateRoute(calculatedRoute));
-      moveBus(fullDistance);
+
+      moveBus(fullDistance, calculatedRoute);
     } else if (trip.status === TRIP_NOT_STARTED) {
       resetBusPosition();
     }

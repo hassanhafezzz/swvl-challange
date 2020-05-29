@@ -6,7 +6,7 @@ import {
   LATENCY_EARLY,
   LATENCY_ON_TIME,
   LATENCY_LATE,
-} from '../../../store/constants';
+} from '../../../constants';
 
 import { startTrip } from '../../../store/actions';
 import { Context } from '../../../store';

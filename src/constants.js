@@ -21,3 +21,15 @@ export const TRIP_COMPLETED = 'TRIP_COMPLETED';
 export const LATENCY_EARLY = 'LATENCY_EARLY';
 export const LATENCY_ON_TIME = 'LATENCY_ON_TIME';
 export const LATENCY_LATE = 'LATENCY_LATE';
+
+export const PAYMENT_METHODS = {
+  CASH: 'cash',
+  CREDIT: 'credit',
+};
+
+export const BOOKING_STATUS = {
+  BOOKED: 'booked',
+  COMPLETED: 'completed',
+  MISSED: 'missed',
+  CANCELLED: 'cancelled',
+};

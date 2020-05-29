@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Loader from '../Loader';
 import styles from './styles.module.css';
@@ -14,6 +15,7 @@ export const BUTTON_VARIANT = {
 
 export default function Button({
   children,
+  to,
   onClick,
   loading,
   disabled,
@@ -21,6 +23,18 @@ export default function Button({
   variant,
   ...rest
 }) {
+  if (to) {
+    return (
+      <Link
+        to={to}
+        className={cx('button', variant, className)}
+        disabled={disabled}
+        {...rest}
+      >
+        {children}
+      </Link>
+    );
+  }
   return (
     <button
       onClick={onClick}

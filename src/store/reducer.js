@@ -10,7 +10,9 @@ import {
   UPDATE_ROUTE,
   UPDATE_STATION_INFO,
   UPDATE_CURRENT_DISTANCE,
-} from './constants';
+  BOOKING_STATUS,
+  PAYMENT_METHODS,
+} from '../constants';
 
 import initialState from './initialState';
 import users from '../data/users';
@@ -22,16 +24,21 @@ const reducer = (state, action) => {
     case ADD_BOOKING:
       return {
         ...state,
-        bookings: [...state.bookings, { ...action.payload, status: 'booked' }],
+        bookings: [
+          ...state.bookings,
+          { ...action.payload, status: BOOKING_STATUS.BOOKED },
+        ],
       };
 
     case UPDATE_BOOKER_STATUS: {
       const lastVisitedStation = action.payload;
       const computedBooking = state.bookings.map((booking) => {
         if (booking.pickupStation === lastVisitedStation.name) {
-          const status = ['completed', 'missed', 'cancelled'][
-            Math.floor(Math.random() * 3)
-          ];
+          const status = [
+            BOOKING_STATUS.COMPLETED,
+            BOOKING_STATUS.CANCELLED,
+            BOOKING_STATUS.MISSED,
+          ][Math.floor(Math.random() * 3)];
           return { ...booking, status };
         }
         return booking;
@@ -52,11 +59,13 @@ const reducer = (state, action) => {
 
         const pickupStation = route[pickupStationIndex].name;
         const dropOffStation = route[dropOffStationIndex].name;
-        const paymentMethod = ['cash', 'credit'][Math.floor(Math.random() * 2)];
+        const paymentMethod = [PAYMENT_METHODS.CASH, PAYMENT_METHODS.CREDIT][
+          Math.floor(Math.random() * 2)
+        ];
 
         return {
           ...user,
-          status: 'booked',
+          status: BOOKING_STATUS.BOOKED,
           pickupStation,
           tripsCount,
           dropOffStation,
@@ -97,12 +106,12 @@ const reducer = (state, action) => {
         ...initialState,
       };
 
-    case UPDATE_ROUTE: {
+    case UPDATE_ROUTE:
       return {
         ...state,
         route: action.payload,
       };
-    }
+
     case UPDATE_CURRENT_DISTANCE: {
       return {
         ...state,

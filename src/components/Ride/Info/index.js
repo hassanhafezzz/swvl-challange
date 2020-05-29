@@ -4,7 +4,7 @@ import Button, { BUTTON_VARIANT } from '../../common/Button';
 import Modal from '../../common/Modal';
 import RideForm from './RideForm';
 import { Context } from '../../../store';
-import { TRIP_IN_PROGRESS, TRIP_COMPLETED } from '../../../store/constants';
+import { TRIP_IN_PROGRESS, TRIP_COMPLETED } from '../../../constants';
 import { resetTrip } from '../../../store/actions';
 import { ReactComponent as Star } from '../../../img/star.svg';
 import { ReactComponent as Dollar } from '../../../img/dollar.svg';
@@ -33,7 +33,7 @@ const Info = () => {
         <RideForm closeModalForm={closeModal} />
       </Modal>
 
-      <div className={cx('container')}>
+      <section className={cx('container')}>
         <div className={cx('heading')}>
           <div>
             <h3 className={cx('title')}>
@@ -111,7 +111,7 @@ const Info = () => {
             </p>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };
