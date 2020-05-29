@@ -16,9 +16,9 @@
   font-size: var(--h5-size);
   color: var(--color-white);
   background-color: var(--color-dark-primary);
-  min-width: 150px;
+  min-width: 140px;
   border-radius: 500px;
-  padding: 14px 20px;
+  padding: 11px 20px;
 }
 
 .primary:hover,
@@ -30,9 +30,9 @@
   font-size: var(--h5-size);
   color: var(--color-white);
   background-color: var(--color-dark-secondary);
-  min-width: 150px;
+  min-width: 140px;
   border-radius: 500px;
-  padding: 14px 20px;
+  padding: 11px 20px;
 }
 
 .secondary:hover,
@@ -44,9 +44,9 @@
   font-size: var(--h5-size);
   color: var(--color-white);
   background-color: var(--color-gray-700);
-  min-width: 150px;
+  min-width: 140px;
   border-radius: 500px;
-  padding: 14px 20px;
+  padding: 11px 20px;
 }
 
 .neutral:hover,
@@ -63,7 +63,7 @@
   .secondary,
   .neutral {
     min-width: 120px;
-    padding: 14px;
+    padding: 11px;
   }
 }
 
