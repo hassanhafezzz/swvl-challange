@@ -1,13 +1,12 @@
 import React, { useEffect, useContext } from 'react';
 import { Context } from '../../store';
-import { initializeApp } from '../../store/actions';
 
 export default function Wrapper({ children }) {
-  const [_, dispatch] = useContext(Context);
+  const [state] = useContext(Context);
 
   useEffect(() => {
-    dispatch(initializeApp());
-  }, [dispatch]);
+    localStorage.setItem('__swvl__', JSON.stringify(state));
+  }, [state]);
 
   return <>{children}</>;
 }

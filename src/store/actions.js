@@ -1,5 +1,4 @@
 import {
-  INITIALIZE_APP,
   ADD_BOOKING,
   FILL_ALL_BOOKINGS,
   UPDATE_STATION_INFO,
@@ -10,10 +9,6 @@ import {
   UPDATE_BOOKER_STATUS,
   UPDATE_CURRENT_DISTANCE,
 } from './constants';
-
-export const initializeApp = () => {
-  return { type: INITIALIZE_APP };
-};
 
 // Booking
 export const fillBookings = () => {

@@ -1,10 +1,18 @@
-export const getFormattedDate = (date) => {
+export const getFormattedDate = (d) => {
+  if (!d) {
+    return null;
+  }
+  const date = new Date(d);
   return `${[date.getMonth() + 1, date.getDate(), date.getFullYear()].join(
     '/',
   )}`;
 };
 
-export const getFormattedTime = (date) => {
+export const getFormattedTime = (d) => {
+  if (!d) {
+    return null;
+  }
+  const date = new Date(d);
   return `${[date.getHours() % 12 || 12, date.getMinutes()].join(':')} ${
     date.getHours() >= 12 ? 'PM' : 'AM'
   }`;

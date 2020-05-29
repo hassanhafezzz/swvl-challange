@@ -1,5 +1,4 @@
 import {
-  INITIALIZE_APP,
   FILL_ALL_BOOKINGS,
   ADD_BOOKING,
   UPDATE_BOOKER_STATUS,
@@ -20,11 +19,6 @@ import { getRandomArbitrary } from '../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case INITIALIZE_APP:
-      return {
-        ...initialState,
-      };
-
     case ADD_BOOKING:
       return {
         ...state,

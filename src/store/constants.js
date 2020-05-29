@@ -1,4 +1,3 @@
-export const INITIALIZE_APP = 'INITIALIZE_APP';
 // booking
 export const FILL_ALL_BOOKINGS = 'FILL_ALL_BOOKINGS';
 export const ADD_BOOKING = 'ADD_BOOKING';

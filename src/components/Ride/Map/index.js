@@ -35,6 +35,8 @@ import {
 
 const cx = classNames.bind(styles);
 
+let path = null;
+
 const Map = () => {
   const mapNode = useRef(null);
   const history = useHistory();
@@ -43,21 +45,19 @@ const Map = () => {
   const closeModal = () => setModalOpen(false);
 
   const [state, dispatch] = useContext(Context);
-  const [line, setLine] = useState(null);
 
   const { route, trip, currentDistance } = state;
+  let interval = null;
+  let animationId = null;
+
+  const clearAnimationIntervals = () => {
+    window.cancelAnimationFrame(animationId);
+    window.clearInterval(interval);
+  };
 
   const tripCompleted = () => {
     dispatch(endTrip());
     openModal();
-  };
-
-  const getNextStation = () => {
-    let nextStation = route.find((coord) => coord.distance > currentDistance);
-    if (!nextStation) {
-      nextStation = route[0];
-    }
-    return nextStation;
   };
 
   const getVisitedStations = (distance) => {
@@ -65,17 +65,15 @@ const Map = () => {
   };
 
   const resetBusPosition = () => {
-    if (line) {
-      const icons = line.get('icons');
+    if (path) {
+      const icons = path.get('icons');
       icons[0].offset = '0%';
-      line.set('icons', icons);
+      path.set('icons', icons);
     }
   };
 
   const moveBus = (fullDistance) => {
     let visitedStationsCount = 0;
-    let interval = null;
-    let animationId = null;
     // In real world app I would properly add another function to check if the difference between the current position and the new position returning from the backend and if it's too big then skip animation and position the bus into the new position, and wouldn't use setInterval [used for the fixed time]
 
     let distance = currentDistance;
@@ -99,18 +97,16 @@ const Map = () => {
       }
 
       const animate = () => {
-        const icons = line.get('icons');
+        const icons = path.get('icons');
         icons[0].offset = `${currentOffset}%`;
-        line.set('icons', icons);
+        path.set('icons', icons);
         animationId = window.requestAnimationFrame(animate);
+        if (currentOffset >= 100) {
+          clearAnimationIntervals();
+          tripCompleted();
+        }
       };
       animationId = window.requestAnimationFrame(animate);
-
-      if (currentOffset >= 100) {
-        tripCompleted();
-        window.cancelAnimationFrame(animationId);
-        window.clearInterval(interval);
-      }
     };
 
     interval = setInterval(() => {
@@ -119,8 +115,8 @@ const Map = () => {
     }, 100);
   };
 
-  /*= == initial calculation for the route === */
-  useEffect(() => {
+  /*= == rendering UI components === */
+  const makePath = () => {
     const mapInstance = mapNode.current.context[MAP];
     const lineSymbol = {
       path: bus,
@@ -133,7 +129,7 @@ const Map = () => {
       anchor: new window.google.maps.Point(30, 50),
     };
 
-    const l = new window.google.maps.Polyline({
+    const path = new window.google.maps.Polyline({
       path: route,
       geodesic: true,
       icons: [
@@ -146,35 +142,10 @@ const Map = () => {
       strokeWeight: 0,
       map: mapInstance,
     });
-    setLine(l);
-  }, []);
 
-  /*= == run whenever the trip status changed === */
-  useEffect(() => {
-    if (trip.status === TRIP_IN_PROGRESS) {
-      const from = {
-        lat: route[0].lat,
-        lng: route[0].lng,
-      };
-      const to = {
-        lat: route[route.length - 1].lat,
-        lng: route[route.length - 1].lng,
-      };
-      const fullDistance = computeDistanceBetween(from, to);
-      const calculatedRoute = computeRouteDistancesAndETAs(
-        route,
-        fullDistance,
-        trip.duration,
-      );
+    return path;
+  };
 
-      dispatch(updateRoute(calculatedRoute));
-      moveBus(fullDistance);
-    } else if (trip.status === TRIP_NOT_STARTED) {
-      resetBusPosition();
-    }
-  }, [trip.status]);
-
-  /*= == rendering UI components === */
   const renderIcon = (i) => {
     if (i === 0 || i === route.length - 1) {
       return {
@@ -195,8 +166,6 @@ const Map = () => {
   };
 
   const renderMarker = ({ id, lat, lng, eta, distance }, i) => {
-    // const nextStation = getNextStation();
-
     return (
       <Marker position={{ lat, lng }} key={id} icon={renderIcon(i)}>
         {trip.status === TRIP_IN_PROGRESS && distance > currentDistance ? (
@@ -239,6 +208,37 @@ const Map = () => {
     );
   };
 
+  /*= == make path on mount === */
+  useEffect(() => {
+    path = makePath();
+  }, []);
+
+  /*= == run whenever the trip status changed === */
+  useEffect(() => {
+    if (trip.status === TRIP_IN_PROGRESS) {
+      const from = {
+        lat: route[0].lat,
+        lng: route[0].lng,
+      };
+      const to = {
+        lat: route[route.length - 1].lat,
+        lng: route[route.length - 1].lng,
+      };
+      const fullDistance = computeDistanceBetween(from, to);
+      const calculatedRoute = computeRouteDistancesAndETAs(
+        route,
+        fullDistance,
+        trip.duration,
+      );
+
+      dispatch(updateRoute(calculatedRoute));
+      moveBus(fullDistance);
+    } else if (trip.status === TRIP_NOT_STARTED) {
+      resetBusPosition();
+    }
+    return () => clearAnimationIntervals();
+  }, [trip.status]);
+
   const centerPoint = route[Math.ceil(route.length / 2) - 1];
   return (
     <>
@@ -272,7 +272,6 @@ const Map = () => {
           </Button>
         </div>
       </Modal>
-      ;
       <GoogleMap
         ref={mapNode}
         defaultZoom={12}
