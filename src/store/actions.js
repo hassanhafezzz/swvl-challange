@@ -1,11 +1,12 @@
 import {
   ADD_BOOKING,
   FILL_ALL_BOOKINGS,
-  UPDATE_STATION_INFO,
   START_TRIP,
   END_TRIP,
   RESET_TRIP,
-  UPDATE_ROUTE,
+  SET_DIRECTION,
+  UPDATE_STATIONS_DISTANCE_AND_ETA,
+  UPDATE_STATION_ARRIVAL_STATUS,
   UPDATE_BOOKER_STATUS,
   UPDATE_CURRENT_DISTANCE,
 } from '../constants';
@@ -32,9 +33,16 @@ export const updateBookerStatus = (payload) => {
 };
 
 // Location and Movement
-export const updateRoute = (payload) => {
+export const setDirections = (payload) => {
   return {
-    type: UPDATE_ROUTE,
+    type: SET_DIRECTION,
+    payload,
+  };
+};
+
+export const updateStationsDistanceAndEta = (payload) => {
+  return {
+    type: UPDATE_STATIONS_DISTANCE_AND_ETA,
     payload,
   };
 };
@@ -46,9 +54,9 @@ export const updateCurrentDistance = (payload) => {
   };
 };
 
-export const updateStationInfo = (payload) => {
+export const updateStationArrivalStatus = (payload) => {
   return {
-    type: UPDATE_STATION_INFO,
+    type: UPDATE_STATION_ARRIVAL_STATUS,
     payload,
   };
 };

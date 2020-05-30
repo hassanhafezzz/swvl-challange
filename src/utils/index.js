@@ -36,34 +36,13 @@ export const computeDistanceBetween = (from, to) => {
   );
 };
 
-export const computeRouteDistancesAndETAs = (route, fullDistance, duration) => {
-  const speed = fullDistance / (duration * 60);
-  const from = {
-    lat: route[0].lat,
-    lng: route[0].lng,
-  };
-
-  const computedRoute = route.map((coord) => {
-    const to = {
-      lat: coord.lat,
-      lng: coord.lng,
-    };
-
-    const distance = computeDistanceBetween(from, to);
-    const eta = distance / speed;
-
-    return { ...coord, distance, eta };
-  });
-
-  return computedRoute;
+export const calcFullDistance = (directions) => {
+  const { legs } = directions.routes[0];
+  return legs.reduce((acc, leg) => acc + leg.distance.value, 0);
 };
 
-export const formatETA = (eta) => {
-  const time = Math.floor(eta);
-  if (time >= 60) {
-    return `${Math.floor(time / 60)} min`;
-  }
-  return `${time} sec`;
+export const getVisitedStations = (stations, distance) => {
+  return stations.filter((station) => station.distance <= distance);
 };
 
 export const busIconPath =

@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  Polyline,
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker,
+  DirectionsRenderer,
 } from 'react-google-maps';
 import { MAP } from 'react-google-maps/lib/constants';
-import { InfoBox } from 'react-google-maps/lib/components/addons/InfoBox';
 import classNames from 'classnames/bind';
 
 import styles from './styles.module.css';
@@ -17,25 +15,27 @@ import Button, { BUTTON_VARIANT } from '../../common/Button';
 import { Context } from '../../../store';
 import { TRIP_IN_PROGRESS, TRIP_NOT_STARTED } from '../../../constants';
 import {
-  endTrip,
-  updateRoute,
+  setDirections,
+  updateStationsDistanceAndEta,
+  updateStationArrivalStatus,
   updateCurrentDistance,
-  resetTrip,
-  updateStationInfo,
   updateBookerStatus,
+  resetTrip,
+  endTrip,
 } from '../../../store/actions';
 
 import {
   busIconPath,
-  computeRouteDistancesAndETAs,
-  computeDistanceBetween,
-  formatETA,
+  getVisitedStations,
+  calcFullDistance,
 } from '../../../utils';
+
+import Markers from './Markers';
 import mapStyles from './mapStyles.json';
 
 const cx = classNames.bind(styles);
 
-let path = null;
+let movementPath = null;
 
 const Map = () => {
   const mapNode = useRef(null);
@@ -46,7 +46,8 @@ const Map = () => {
 
   const [state, dispatch] = useContext(Context);
 
-  const { route, trip, currentDistance } = state;
+  const { directions, isMapReady, stations, trip, currentDistance } = state;
+
   let interval = null;
   let animationId = null;
 
@@ -60,64 +61,71 @@ const Map = () => {
     openModal();
   };
 
-  const getVisitedStations = (distance, calculatedRoute) => {
-    return calculatedRoute.filter((coord) => coord.distance <= distance);
-  };
+  const drawMovementPathOnMap = (result) => {
+    const mapInstance = mapNode.current.context[MAP];
 
-  const calcFullDistance = () => {
-    const from = {
-      lat: route[0].lat,
-      lng: route[0].lng,
+    const lineSymbol = {
+      path: busIconPath,
+      fillColor: '#ee4149',
+      fillOpacity: 1,
+      strokeColor: '#000',
+      strokeWeight: 2,
+      scale: 0.4,
+      rotation: 180,
+      anchor: new window.google.maps.Point(30, 50),
     };
-    const to = {
-      lat: route[route.length - 1].lat,
-      lng: route[route.length - 1].lng,
-    };
-    return computeDistanceBetween(from, to);
+
+    const overviewPath = result.routes[0].overview_path;
+    return new window.google.maps.Polyline({
+      path: overviewPath,
+      geodesic: true,
+      icons: [
+        {
+          icon: lineSymbol,
+          offset: '0%',
+        },
+      ],
+      strokeOpacity: 5,
+      strokeWeight: 0,
+      map: mapInstance,
+    });
   };
 
-  const calcRouteInfo = () => {
-    const fullDistance = calcFullDistance();
-    return computeRouteDistancesAndETAs(route, fullDistance, trip.duration);
-  };
-
-  const resetBusPosition = () => {
-    if (path) {
-      const icons = path.get('icons');
-      icons[0].offset = '0%';
-      path.set('icons', icons);
-    }
-  };
-
-  const moveBus = (fullDistance, calculatedRoute) => {
-    let visitedStationsCount = 0;
+  const moveBus = () => {
     // In real world app I would properly add another function to check if the difference between the current position and the new position returning from the backend and if it's too big then skip animation and position the bus into the new position, and wouldn't use setInterval [used for the fixed time]
+    if (!movementPath) {
+      movementPath = drawMovementPathOnMap(directions);
+    }
 
+    const fullDistance = calcFullDistance(directions);
     let distance = currentDistance;
     const speedPerSecond = fullDistance / (trip.duration * 60);
     const speed = speedPerSecond / 10;
+
+    let visitedStationsCount = 0;
     const move = () => {
       distance += speed;
       let currentOffset = (distance / fullDistance) * 100;
 
-      // update bookings status and station arrival status
-      const visitedStations = getVisitedStations(distance, calculatedRoute);
+      const visitedStations = getVisitedStations(stations, distance);
 
+      // update station arrival status and customer status upon arrival
       if (visitedStations.length > visitedStationsCount) {
         visitedStationsCount = visitedStations.length;
         const lastVisitedStation = visitedStations[visitedStations.length - 1];
-        dispatch(updateStationInfo(lastVisitedStation));
+        dispatch(updateStationArrivalStatus(lastVisitedStation));
         dispatch(updateBookerStatus(lastVisitedStation));
       }
 
+      // make sure offset doesn't go over 100%
       if (currentOffset > 100) {
         currentOffset = 100;
       }
 
       const animate = () => {
-        const icons = path.get('icons');
+        const icons = movementPath.get('icons');
         icons[0].offset = `${currentOffset}%`;
-        path.set('icons', icons);
+        movementPath.set('icons', icons);
         animationId = window.requestAnimationFrame(animate);
         if (currentOffset >= 100) {
           clearAnimationIntervals();
@@ -133,119 +141,72 @@ const Map = () => {
     }, 100);
   };
 
-  /*= == rendering UI components === */
-  const makePath = () => {
-    const mapInstance = mapNode.current.context[MAP];
-    const lineSymbol = {
-      path: busIconPath,
-      fillColor: '#ee4149',
-      fillOpacity: 1,
-      strokeColor: '#000',
-      strokeWeight: 2,
-      scale: 0.4,
-      rotation: 180,
-      anchor: new window.google.maps.Point(30, 50),
-    };
+  const resetBusPosition = () => {
+    debugger;
+    if (movementPath) {
+      const icons = movementPath.get('icons');
+      icons[0].offset = '0%';
+      movementPath.set('icons', icons);
+    }
+  };
 
-    const p = new window.google.maps.Polyline({
-      path: route,
-      geodesic: true,
-      icons: [
-        {
-          icon: lineSymbol,
-          offset: '0%',
-        },
-      ],
-      strokeOpacity: 5,
-      strokeWeight: 0,
-      map: mapInstance,
+  const getDirectionsAndMovementPath = () => {
+    const DirectionsService = new window.google.maps.DirectionsService();
+    const firstStation = stations[0];
+    const middleStations = stations.slice(1, stations.length - 1);
+    const lastStation = stations[stations.length - 1];
+
+    const wayPoints = middleStations.map((station) => {
+      return {
+        location: new window.google.maps.LatLng(station.lat, station.lng),
+        stopover: true,
+      };
     });
 
-    return p;
-  };
-
-  const renderIcon = (i) => {
-    if (i === 0 || i === route.length - 1) {
-      return {
-        path: window.google.maps.SymbolPath.CIRCLE,
-        scale: 8,
-        fillColor: '#000',
-        fillOpacity: 1,
-        strokeWeight: 0,
-      };
-    }
-    return {
-      path: window.google.maps.SymbolPath.CIRCLE,
-      scale: 4,
-      fillColor: '#ee4149',
-      fillOpacity: 1,
-      strokeWeight: 0,
-    };
-  };
-
-  const renderMarker = ({ id, lat, lng, eta, distance }, i) => {
-    return (
-      <Marker position={{ lat, lng }} key={id} icon={renderIcon(i)}>
-        {trip.status === TRIP_IN_PROGRESS && distance > currentDistance ? (
-          <InfoBox
-            options={{
-              pixelOffset: new window.google.maps.Size(-55, 0),
-              closeBoxURL: '',
-              enableEventPropagation: true,
-            }}
-          >
-            <div
-              style={{
-                backgroundColor: '#fff',
-                padding: '5px 10px',
-                borderRadius: '10px 0px 10px 10px',
-              }}
-            >
-              <div
-                style={{
-                  marginBottom: '1px',
-                  fontSize: '5px',
-                  fontColor: '#7e7e7e',
-                }}
-              >
-                ETA
-              </div>
-              <div
-                style={{
-                  fontSize: '10px',
-                  fontWeight: 'bold',
-                  fontColor: '#222222',
-                }}
-              >
-                {formatETA(eta)}
-              </div>
-            </div>
-          </InfoBox>
-        ) : null}
-      </Marker>
+    DirectionsService.route(
+      {
+        origin: new window.google.maps.LatLng(
+          firstStation.lat,
+          firstStation.lng,
+        ),
+        destination: new window.google.maps.LatLng(
+          lastStation.lat,
+          lastStation.lng,
+        ),
+        waypoints: wayPoints,
+        travelMode: 'DRIVING',
+      },
+      async (result, status) => {
+        if (status === window.google.maps.DirectionsStatus.OK) {
+          await dispatch(setDirections(result));
+          await dispatch(updateStationsDistanceAndEta(result));
+          if (!movementPath) {
+            movementPath = drawMovementPathOnMap(result);
+          }
+        } else {
+          console.error(`error fetching directions ${result.status}`);
+        }
+      },
     );
   };
 
-  /*= == make path on mount === */
   useEffect(() => {
-    path = makePath();
+    // get direction and construct movement path on mount
+    getDirectionsAndMovementPath();
   }, []);
 
-  /*= == run whenever the trip status changed === */
   useEffect(() => {
+    /*= == run whenever the trip status changed === */
     if (trip.status === TRIP_IN_PROGRESS) {
-      const fullDistance = calcFullDistance();
-      const calculatedRoute = calcRouteInfo();
-      dispatch(updateRoute(calculatedRoute));
-
-      moveBus(fullDistance, calculatedRoute);
+      moveBus();
     } else if (trip.status === TRIP_NOT_STARTED) {
       resetBusPosition();
     }
     return () => clearAnimationIntervals();
   }, [trip.status]);
 
-  const centerPoint = route[Math.ceil(route.length / 2) - 1];
+  const centerPoint = stations[Math.ceil(stations.length / 2) - 1];
+
   return (
     <>
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
@@ -278,28 +239,33 @@ const Map = () => {
           </Button>
         </div>
       </Modal>
-      <GoogleMap
-        ref={mapNode}
-        defaultZoom={12}
-        defaultCenter={{
-          lat: centerPoint.lat - 0.002,
-          lng: centerPoint.lng + 0.02,
-        }}
-        defaultOptions={{
-          styles: mapStyles,
-        }}
-      >
-        {route.map(renderMarker)}
-
-        <Polyline
-          path={route}
-          geodesic
-          options={{
-            strokeColor: '#ee4149',
-            strokeWeight: 2,
+      {isMapReady ? (
+        <GoogleMap
+          ref={mapNode}
+          defaultZoom={12}
+          defaultCenter={{
+            lat: centerPoint.lat - 0.002,
+            lng: centerPoint.lng + 0.02,
           }}
-        />
-      </GoogleMap>
+          defaultOptions={{
+            styles: mapStyles,
+          }}
+        >
+          <DirectionsRenderer
+            directions={directions}
+            options={{
+              polylineOptions: {
+                strokeColor: '#ee4149',
+                strokeWeight: 2,
+              },
+              markerOptions: {
+                visible: false,
+              },
+            }}
+          />
+          <Markers />
+        </GoogleMap>
+      ) : null}
     </>
   );
 };
@@ -307,7 +273,7 @@ const Map = () => {
 const withDefaults = (WrappedComponent) => {
   return (props) => (
     <WrappedComponent
-      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa-_J8FZe22-_HF_mJCQ30sly2OGL1ozo&libraries=geometry"
+      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa-_J8FZe22-_HF_mJCQ30sly2OGL1ozo&libraries=geometry,drawing,places"
       loadingElement={<div style={{ height: `100%` }} />}
       containerElement={<div style={{ height: `400px` }} />}
       mapElement={<div style={{ height: `100%` }} />}
