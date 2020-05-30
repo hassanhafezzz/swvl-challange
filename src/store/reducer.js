@@ -1,3 +1,4 @@
+import shuffle from 'lodash.shuffle';
 import {
   FILL_ALL_BOOKINGS,
   ADD_BOOKING,
@@ -78,7 +79,7 @@ const reducer = (state, action) => {
 
       return {
         ...state,
-        bookings,
+        bookings: shuffle(bookings),
       };
     }
 
