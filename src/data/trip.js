@@ -1,5 +1,5 @@
 import { TRIP_NOT_STARTED } from '../constants';
-import route from './route';
+import stations from './stations';
 import driver from '../img/driver.jpg';
 import bus from '../img/ford-bus.png';
 
@@ -8,8 +8,8 @@ const trip = {
   fare: 55,
   distance: 13798,
   startedAt: 0,
-  start: route[0].name,
-  end: route[route.length - 1].name,
+  start: stations[0].name,
+  end: stations[stations.length - 1].name,
   driver: {
     image: driver,
     name: 'Herbert Patton',

@@ -8,12 +8,12 @@ const cx = classNames.bind(styles);
 
 const BookingPerStationChart = () => {
   const [state] = useContext(Context);
-  const { bookings, route } = state;
+  const { bookings, stations } = state;
 
-  const stations = route.map((station) => station.name);
+  const stationsName = stations.map((station) => station.name);
   const counts = [];
 
-  stations.forEach((station) => {
+  stationsName.forEach((station) => {
     let count = 0;
     bookings.forEach((booking) => {
       if (booking.pickupStation === station) {
@@ -24,7 +24,7 @@ const BookingPerStationChart = () => {
   });
 
   const data = {
-    labels: stations,
+    labels: stationsName,
     datasets: [
       {
         label: 'bookings per station',

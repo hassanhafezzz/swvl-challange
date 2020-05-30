@@ -1,9 +1,11 @@
 import trip from '../data/trip';
-import route from '../data/route';
+import stations from '../data/stations';
 
 const initialState = {
   trip,
-  route,
+  stations,
+  directions: [],
+  isMapReady: false,
   currentDistance: 0,
   bookings: [],
 };

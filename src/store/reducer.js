@@ -5,18 +5,20 @@ import {
   RESET_TRIP,
   START_TRIP,
   END_TRIP,
+  TRIP_NOT_STARTED,
   TRIP_IN_PROGRESS,
   TRIP_COMPLETED,
-  UPDATE_ROUTE,
-  UPDATE_STATION_INFO,
+  SET_DIRECTION,
+  UPDATE_STATIONS_DISTANCE_AND_ETA,
+  UPDATE_STATION_ARRIVAL_STATUS,
   UPDATE_CURRENT_DISTANCE,
   BOOKING_STATUS,
   PAYMENT_METHODS,
 } from '../constants';
 
-import initialState from './initialState';
+// import initialState from './initialState';
 import users from '../data/users';
-import route from '../data/route';
+import stations from '../data/stations';
 import { getRandomArbitrary } from '../utils';
 
 const reducer = (state, action) => {
@@ -51,14 +53,14 @@ const reducer = (state, action) => {
 
     case FILL_ALL_BOOKINGS: {
       const bookings = users.map(({ trips_count: tripsCount, ...user }) => {
-        const pickupStationIndex = getRandomArbitrary(0, route.length - 2);
+        const pickupStationIndex = getRandomArbitrary(0, stations.length - 2);
         const dropOffStationIndex = getRandomArbitrary(
           pickupStationIndex + 1,
-          route.length - 1,
+          stations.length - 1,
         );
 
-        const pickupStation = route[pickupStationIndex].name;
-        const dropOffStation = route[dropOffStationIndex].name;
+        const pickupStation = stations[pickupStationIndex].name;
+        const dropOffStation = stations[dropOffStationIndex].name;
         const paymentMethod = [PAYMENT_METHODS.CASH, PAYMENT_METHODS.CREDIT][
           Math.floor(Math.random() * 2)
         ];
@@ -103,14 +105,39 @@ const reducer = (state, action) => {
 
     case RESET_TRIP:
       return {
-        ...initialState,
+        ...state,
+        trip: { ...state.trip, status: TRIP_NOT_STARTED },
+        currentDistance: 0,
+        bookings: [],
       };
 
-    case UPDATE_ROUTE:
+    case SET_DIRECTION: {
       return {
         ...state,
-        route: action.payload,
+        isMapReady: true,
+        directions: action.payload,
       };
+    }
+
+    case UPDATE_STATIONS_DISTANCE_AND_ETA: {
+      const directions = action.payload;
+      const { legs } = directions.routes[0];
+      const newStations = state.stations.map((station, i) => {
+        if (i === 0) {
+          return { ...station, distance: 0, eta: '' };
+        }
+        const distance = legs
+          .slice(0, i)
+          .reduce((acc, leg) => acc + leg.distance.value, 0);
+        const eta = legs[i - 1].duration.text;
+        return { ...station, distance, eta };
+      });
+
+      return {
+        ...state,
+        stations: newStations,
+      };
+    }
 
     case UPDATE_CURRENT_DISTANCE: {
       return {
@@ -119,9 +146,9 @@ const reducer = (state, action) => {
       };
     }
 
-    case UPDATE_STATION_INFO: {
+    case UPDATE_STATION_ARRIVAL_STATUS: {
       const lastVisitedStation = action.payload;
-      const computedRoute = state.route.map((station) => {
+      const updatedStations = state.stations.map((station) => {
         if (station.id === lastVisitedStation.id) {
           const status = ['early', 'on time', 'late'][
             Math.floor(Math.random() * 3)
@@ -133,7 +160,7 @@ const reducer = (state, action) => {
 
       return {
         ...state,
-        route: computedRoute,
+        stations: updatedStations,
       };
     }
 

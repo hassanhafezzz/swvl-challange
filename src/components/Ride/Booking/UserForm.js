@@ -11,11 +11,11 @@ import Button, { BUTTON_VARIANT } from '../../common/Button';
 import usersMock from '../../../data/users';
 import { isLink } from '../../../utils';
 import { PAYMENT_METHODS } from '../../../constants';
-import route from '../../../data/route';
+import stations from '../../../data/stations';
 
 const cx = classNames.bind(styles);
 
-const stations = route.map((point) => point.name);
+const stationsNames = stations.map((point) => point.name);
 
 const UserForm = ({ closeModalForm }) => {
   const user = usersMock[Math.floor(Math.random() * usersMock.length)];
@@ -60,7 +60,9 @@ const UserForm = ({ closeModalForm }) => {
     return errors;
   };
 
-  const pickupStations = stations.filter((s, i) => i !== stations.length - 1);
+  const pickupStations = stationsNames.filter(
+    (s, i) => i !== stations.length - 1,
+  );
 
   return (
     <Formik
@@ -69,7 +71,7 @@ const UserForm = ({ closeModalForm }) => {
       onSubmit={onSubmit}
     >
       {({ isValid, values, setFieldValue }) => {
-        const dropOffStations = stations.slice(
+        const dropOffStations = stationsNames.slice(
           stations.indexOf(values.pickupStation) + 1,
         );
 
