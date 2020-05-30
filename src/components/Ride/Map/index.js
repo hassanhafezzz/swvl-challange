@@ -179,7 +179,10 @@ const Map = () => {
         if (status === window.google.maps.DirectionsStatus.OK) {
           await dispatch(setDirections(result));
           await dispatch(updateStationsDistanceAndEta(result));
-          if (!movementPath) {
+          if (
+            !movementPath ||
+            (movementPath && trip.status !== TRIP_IN_PROGRESS)
+          ) {
             movementPath = drawMovementPathOnMap(result);
           }
         } else {
