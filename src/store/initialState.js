@@ -4,7 +4,7 @@ import stations from '../data/stations';
 const initialState = {
   trip,
   stations,
-  directions: [],
+  directions: {},
   isMapReady: false,
   currentDistance: 0,
   bookings: [],

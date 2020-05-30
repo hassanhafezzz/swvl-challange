@@ -4,6 +4,7 @@ import {
   START_TRIP,
   END_TRIP,
   RESET_TRIP,
+  SET_STATIONS,
   SET_DIRECTION,
   UPDATE_STATIONS_DISTANCE_AND_ETA,
   UPDATE_STATION_ARRIVAL_STATUS,
@@ -33,6 +34,13 @@ export const updateBookerStatus = (payload) => {
 };
 
 // Location and Movement
+export const setStations = (payload) => {
+  return {
+    type: SET_STATIONS,
+    payload,
+  };
+};
+
 export const setDirections = (payload) => {
   return {
     type: SET_DIRECTION,

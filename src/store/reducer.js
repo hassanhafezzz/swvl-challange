@@ -9,16 +9,16 @@ import {
   TRIP_IN_PROGRESS,
   TRIP_COMPLETED,
   SET_DIRECTION,
+  SET_STATIONS,
   UPDATE_STATIONS_DISTANCE_AND_ETA,
   UPDATE_STATION_ARRIVAL_STATUS,
   UPDATE_CURRENT_DISTANCE,
   BOOKING_STATUS,
   PAYMENT_METHODS,
+  LATENCY,
 } from '../constants';
 
-// import initialState from './initialState';
 import users from '../data/users';
-import stations from '../data/stations';
 import { getRandomArbitrary } from '../utils';
 
 const reducer = (state, action) => {
@@ -52,6 +52,7 @@ const reducer = (state, action) => {
     }
 
     case FILL_ALL_BOOKINGS: {
+      const { stations } = state;
       const bookings = users.map(({ trips_count: tripsCount, ...user }) => {
         const pickupStationIndex = getRandomArbitrary(0, stations.length - 2);
         const dropOffStationIndex = getRandomArbitrary(
@@ -106,10 +107,22 @@ const reducer = (state, action) => {
     case RESET_TRIP:
       return {
         ...state,
-        trip: { ...state.trip, status: TRIP_NOT_STARTED },
+        trip: {
+          ...state.trip,
+          startedAt: '',
+          duration: 0,
+          status: TRIP_NOT_STARTED,
+        },
         currentDistance: 0,
         bookings: [],
       };
+
+    case SET_STATIONS: {
+      return {
+        ...state,
+        stations: action.payload,
+      };
+    }
 
     case SET_DIRECTION: {
       return {
@@ -129,6 +142,7 @@ const reducer = (state, action) => {
         const distance = legs
           .slice(0, i)
           .reduce((acc, leg) => acc + leg.distance.value, 0);
+
         const eta = legs[i - 1].duration.text;
         return { ...station, distance, eta };
       });
@@ -147,12 +161,12 @@ const reducer = (state, action) => {
     }
 
     case UPDATE_STATION_ARRIVAL_STATUS: {
+      const { EARLY, ON_TIME, LATE } = LATENCY;
+      const { stations } = state;
       const lastVisitedStation = action.payload;
-      const updatedStations = state.stations.map((station) => {
+      const updatedStations = stations.map((station) => {
         if (station.id === lastVisitedStation.id) {
-          const status = ['early', 'on time', 'late'][
-            Math.floor(Math.random() * 3)
-          ];
+          const status = [EARLY, ON_TIME, LATE][Math.floor(Math.random() * 3)];
           return { ...station, status };
         }
         return station;

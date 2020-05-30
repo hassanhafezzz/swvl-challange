@@ -9,8 +9,8 @@ export const START_TRIP = 'START_TRIP';
 export const END_TRIP = 'END_TRIP';
 
 // location
+export const SET_STATIONS = 'SET_STATIONS';
 export const SET_DIRECTION = 'SET_DIRECTION';
-
 export const UPDATE_CURRENT_DISTANCE = 'UPDATE_CURRENT_DISTANCE';
 export const UPDATE_STATIONS_DISTANCE_AND_ETA =
   'UPDATE_STATIONS_DISTANCE_AND_ETA';
@@ -21,9 +21,11 @@ export const TRIP_NOT_STARTED = 'TRIP_NOT_STARTED';
 export const TRIP_IN_PROGRESS = 'TRIP_IN_PROGRESS';
 export const TRIP_COMPLETED = 'TRIP_COMPLETED';
 
-export const LATENCY_EARLY = 'LATENCY_EARLY';
-export const LATENCY_ON_TIME = 'LATENCY_ON_TIME';
-export const LATENCY_LATE = 'LATENCY_LATE';
+export const LATENCY = {
+  EARLY: 'early',
+  ON_TIME: 'on time',
+  LATE: 'late',
+};
 
 export const PAYMENT_METHODS = {
   CASH: 'cash',

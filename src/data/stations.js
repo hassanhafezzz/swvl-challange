@@ -1,4 +1,4 @@
-const route = [
+const stations = [
   {
     id: 1,
     name: 'almaza',
@@ -61,4 +61,4 @@ const route = [
   },
 ];
 
-export default route;
+export default stations;

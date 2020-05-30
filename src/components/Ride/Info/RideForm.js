@@ -2,11 +2,7 @@ import React, { useContext } from 'react';
 import { Formik, Form } from 'formik';
 import classNames from 'classnames/bind';
 import styles from './styles.module.css';
-import {
-  LATENCY_EARLY,
-  LATENCY_ON_TIME,
-  LATENCY_LATE,
-} from '../../../constants';
+import { LATENCY } from '../../../constants';
 
 import { startTrip } from '../../../store/actions';
 import { Context } from '../../../store';
@@ -19,7 +15,7 @@ const cx = classNames.bind(styles);
 const RideForm = ({ closeModalForm }) => {
   const initialValues = {
     duration: 3,
-    latency: LATENCY_ON_TIME,
+    latency: LATENCY.ON_TIME,
   };
 
   const [_, dispatch] = useContext(Context);
@@ -29,10 +25,10 @@ const RideForm = ({ closeModalForm }) => {
     const { latency } = values;
 
     switch (latency) {
-      case LATENCY_EARLY:
+      case LATENCY.EARLY:
         duration -= 0.5;
         break;
-      case LATENCY_LATE:
+      case LATENCY.LATE:
         duration += 0.5;
         break;
       default:
@@ -71,9 +67,9 @@ const RideForm = ({ closeModalForm }) => {
           />
           <SelectField name="latency" id="latency" label="Expected latency">
             <option disabled selected label="Is the driver running late?" />
-            <option label="arriving early" value={LATENCY_EARLY} />
-            <option label="arriving on time" value={LATENCY_ON_TIME} />
-            <option label="arriving late" value={LATENCY_LATE} />
+            <option label="arriving early" value={LATENCY.EARLY} />
+            <option label="arriving on time" value={LATENCY.ON_TIME} />
+            <option label="arriving late" value={LATENCY.LATE} />
           </SelectField>
 
           <Button
