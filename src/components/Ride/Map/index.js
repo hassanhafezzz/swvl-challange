@@ -142,7 +142,6 @@ const Map = () => {
   };
 
   const resetBusPosition = () => {
-    debugger;
     if (movementPath) {
       const icons = movementPath.get('icons');
       icons[0].offset = '0%';
@@ -204,7 +203,6 @@ const Map = () => {
     }
     return () => clearAnimationIntervals();
   }, [trip.status]);
-
   const centerPoint = stations[Math.ceil(stations.length / 2) - 1];
 
   return (
@@ -273,7 +271,7 @@ const Map = () => {
 const withDefaults = (WrappedComponent) => {
   return (props) => (
     <WrappedComponent
-      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa-_J8FZe22-_HF_mJCQ30sly2OGL1ozo&libraries=geometry,drawing,places"
+      googleMapURL={process.env.REACT_APP_GOOGLE_MAPS_API}
       loadingElement={<div style={{ height: `100%` }} />}
       containerElement={<div style={{ height: `400px` }} />}
       mapElement={<div style={{ height: `100%` }} />}
