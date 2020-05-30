@@ -25,13 +25,13 @@ import {
   updateBookerStatus,
 } from '../../../store/actions';
 
-import bus from './busIconPath';
-import mapStyles from './mapStyles.json';
 import {
+  busIconPath,
   computeRouteDistancesAndETAs,
   computeDistanceBetween,
   formatETA,
 } from '../../../utils';
+import mapStyles from './mapStyles.json';
 
 const cx = classNames.bind(styles);
 
@@ -137,7 +137,7 @@ const Map = () => {
   const makePath = () => {
     const mapInstance = mapNode.current.context[MAP];
     const lineSymbol = {
-      path: bus,
+      path: busIconPath,
       fillColor: '#ee4149',
       fillOpacity: 1,
       strokeColor: '#000',
