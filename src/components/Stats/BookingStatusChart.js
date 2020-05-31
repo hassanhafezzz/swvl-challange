@@ -36,7 +36,7 @@ const BookingStatusChart = () => {
   };
 
   return (
-    <section className={cx('section')}>
+    <section className={cx('section')} data-testid="booking-status-chart">
       <h4 className={cx('section-header')}>
         Break down for customers&apos; status for the trip
       </h4>

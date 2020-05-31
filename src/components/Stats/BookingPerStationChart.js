@@ -65,7 +65,7 @@ const BookingPerStationChart = () => {
   };
 
   return (
-    <section className={cx('section')}>
+    <section className={cx('section')} data-testid="booking-per-station-chart">
       <h4 className={cx('section-header')}>
         Break down for customers&apos; booking per station
       </h4>

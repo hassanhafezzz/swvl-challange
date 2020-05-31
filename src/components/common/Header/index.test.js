@@ -9,6 +9,6 @@ test('header has logo', () => {
 });
 
 test('add snapshot for header ', () => {
-  const { asFragment } = render(<Header />);
-  expect(asFragment()).toMatchSnapshot();
+  const { container, asFragment } = render(<Header />);
+  expect(asFragment(container)).toMatchSnapshot();
 });

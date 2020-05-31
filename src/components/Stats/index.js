@@ -10,7 +10,7 @@ const cx = classNames.bind(styles);
 
 export default function Stats() {
   return (
-    <div className={cx('container')}>
+    <div className={cx('container')} data-testid="stats">
       <div className={cx('heading')}>
         <div>
           <h3 className={cx('title')}>

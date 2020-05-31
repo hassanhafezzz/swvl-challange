@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`stats component test add snapshot for stats 1`] = `
+<DocumentFragment>
+  <div
+    class="container"
+    data-testid="stats"
+  >
+    <div
+      class="heading"
+    >
+      <div>
+        <h3
+          class="title"
+        >
+          Trip Statistics 
+          <span
+            aria-label="stats"
+            role="img"
+          >
+            📊
+          </span>
+        </h3>
+      </div>
+      <a
+        class="button secondary"
+        href="/"
+      >
+        go back
+      </a>
+    </div>
+    <hr
+      class="divider"
+    />
+    <div
+      class="wrapper"
+    >
+      <section
+        class="section"
+        data-testid="booking-per-station-chart"
+      >
+        <h4
+          class="section-header"
+        >
+          Break down for customers' booking per station
+        </h4>
+        <canvas
+          height="150"
+          width="300"
+        />
+      </section>
+      <hr
+        class="divider large"
+      />
+      <section
+        class="section"
+        data-testid="booking-status-chart"
+      >
+        <h4
+          class="section-header"
+        >
+          Break down for customers' status for the trip
+        </h4>
+        <canvas
+          height="150"
+          width="300"
+        />
+      </section>
+      <hr
+        class="divider large"
+      />
+      <section
+        class="section"
+        data-testid="payment-chart"
+      >
+        <h4
+          class="section-header"
+        >
+          Break down for customers' payment methods
+        </h4>
+        <canvas
+          height="150"
+          width="300"
+        />
+      </section>
+    </div>
+  </div>
+</DocumentFragment>
+`;

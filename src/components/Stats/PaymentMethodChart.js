@@ -37,7 +37,7 @@ const BookingStatusChart = () => {
   };
 
   return (
-    <section className={cx('section')}>
+    <section className={cx('section')} data-testid="payment-chart">
       <h4 className={cx('section-header')}>
         Break down for customers&apos; payment methods
       </h4>

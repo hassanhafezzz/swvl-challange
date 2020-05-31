@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`info component test add snapshot for info 1`] = `
+<DocumentFragment>
+  <section
+    class="container"
+    data-testid="info"
+  >
+    <div
+      class="heading"
+    >
+      <div>
+        <h3
+          class="title"
+        >
+          Trip Information 
+          <span
+            aria-label="bus"
+            role="img"
+          >
+            🚐
+          </span>
+        </h3>
+      </div>
+      <button
+        class="button secondary"
+        disabled=""
+        type="button"
+      >
+        Start Ride
+      </button>
+    </div>
+    <div
+      class="widgets"
+    >
+      <div
+        class="driver"
+      >
+        <div
+          class="media"
+        >
+          <img
+            alt="Herbert Patton"
+            class="driver-image"
+            src="driver.jpg"
+          />
+          <img
+            alt="ford minibus"
+            class="bus-image"
+            src="ford-bus.png"
+          />
+        </div>
+        <div
+          class="body"
+        >
+          <p
+            class="driver-name"
+          >
+            Herbert Patton
+            <span
+              class="rating-icon"
+            >
+              <svg
+                title="star"
+              >
+                star.svg
+              </svg>
+               5
+            </span>
+          </p>
+          <p
+            class="bus-type"
+          >
+            Ford Transit - GA 213
+          </p>
+        </div>
+      </div>
+      <div
+        class="route"
+      >
+        <div
+          class="route-desc"
+        >
+          <p>
+            almaza
+          </p>
+          <p>
+            talat harb
+          </p>
+        </div>
+      </div>
+      <div
+        class="extra-info"
+      >
+        <p>
+          <svg>
+            pin.svg
+          </svg>
+          Trip Distance: 13.798 KM
+        </p>
+        <p>
+          <svg>
+            dollar.svg
+          </svg>
+          Trip Base Fare: 55 EGP
+        </p>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;

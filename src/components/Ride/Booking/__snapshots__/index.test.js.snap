@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Booking component test add snapshot for booking 1`] = `
+<DocumentFragment>
+  <section
+    class="container"
+    data-testid="booking"
+  >
+    <div
+      class="heading"
+    >
+      <h3
+        class="title"
+      >
+        Bookings 
+        <span
+          aria-label="bus"
+          role="img"
+        >
+          🔖
+        </span>
+      </h3>
+      <button
+        class="button secondary"
+        type="button"
+      >
+        New Book
+      </button>
+    </div>
+    <div
+      class="fill-bookings-container"
+    >
+      <p>
+        <span
+          aria-label="sparks"
+          role="img"
+        >
+          ✨
+        </span>
+        Or just fill all 12 spots at once 
+        <span
+          aria-label="sparks"
+          role="img"
+        >
+          ✨
+        </span>
+      </p>
+      <button
+        class="button primary"
+        type="button"
+      >
+        fill all
+      </button>
+    </div>
+  </section>
+</DocumentFragment>
+`;
