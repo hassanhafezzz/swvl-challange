@@ -13,9 +13,18 @@ export const getFormattedTime = (d) => {
     return null;
   }
   const date = new Date(d);
-  return `${[date.getHours() % 12 || 12, date.getMinutes()].join(':')} ${
-    date.getHours() >= 12 ? 'PM' : 'AM'
-  }`;
+  const hours = date.getHours() % 12 || 12;
+  const mins = `${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
+  return `${[hours, mins].join(':')} ${hours >= 12 ? 'AM' : 'PM'}`;
+};
+
+export const getEta = (time, eta) => {
+  if (!time || !eta) {
+    return '';
+  }
+  const startDate = new Date(time);
+  const etaDate = new Date(startDate.getTime() + eta);
+  return getFormattedTime(etaDate);
 };
 
 export const getRandomArbitrary = (min, max) => {

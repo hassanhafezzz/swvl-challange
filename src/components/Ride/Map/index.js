@@ -66,9 +66,9 @@ const Map = () => {
 
     const lineSymbol = {
       path: busIconPath,
-      fillColor: '#ee4149',
+      fillColor: '#f56970',
       fillOpacity: 1,
-      strokeColor: '#000',
+      strokeColor: '#222',
       strokeWeight: 2,
       scale: 0.4,
       rotation: 180,
@@ -92,24 +92,26 @@ const Map = () => {
   };
 
   const moveBus = () => {
-    // In real world app I would properly add another function to check if the difference between the current position and the new position returning from the backend and if it's too big then skip animation and position the bus into the new position, and wouldn't use setInterval [used for the fixed time]
+    dispatch(updateStationsDistanceAndEta(directions));
     if (!movementPath) {
       movementPath = drawMovementPathOnMap(directions);
     }
 
     const fullDistance = calcFullDistance(directions);
-    let distance = currentDistance;
     const speedPerSecond = fullDistance / (trip.duration * 60);
     const speed = speedPerSecond / 10;
 
+    let distance = currentDistance;
     let visitedStationsCount = 0;
+
+    // In real world app I would properly add another function to check if the difference between the current position and the new position returning from the backend and if it's too big then skip animation and position the bus into the new position, and wouldn't use setInterval [used for the fixed time]
     const move = () => {
       distance += speed;
       let currentOffset = (distance / fullDistance) * 100;
 
       const visitedStations = getVisitedStations(stations, distance);
 
-      // update station arrival status and customer status upon arrival
+      // update station arrival status and customer status upon arrival real time
       if (visitedStations.length > visitedStationsCount) {
         visitedStationsCount = visitedStations.length;
         const lastVisitedStation = visitedStations[visitedStations.length - 1];
@@ -136,6 +138,7 @@ const Map = () => {
     };
 
     interval = setInterval(() => {
+      // in real world app there's no need to set interval to update the data
       move();
       dispatch(updateCurrentDistance(distance));
     }, 100);
@@ -178,11 +181,12 @@ const Map = () => {
       async (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
           await dispatch(setDirections(result));
-          await dispatch(updateStationsDistanceAndEta(result));
           if (
             !movementPath ||
             (movementPath && trip.status !== TRIP_IN_PROGRESS)
           ) {
+            // in case there's no movement path draw one
+            // and in case there's one but the care is idle re-draw the path
             movementPath = drawMovementPathOnMap(result);
           }
         } else {
@@ -198,7 +202,7 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
-    /*= == run whenever the trip status changed === */
+    // run whenever the trip status changed
     if (trip.status === TRIP_IN_PROGRESS) {
       moveBus();
     } else if (trip.status === TRIP_NOT_STARTED) {
@@ -206,8 +210,8 @@ const Map = () => {
     }
     return () => clearAnimationIntervals();
   }, [trip.status]);
-  const centerPoint = stations[Math.ceil(stations.length / 2) - 1];
 
+  const centerPoint = stations[Math.ceil(stations.length / 2) - 1];
   return (
     <>
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
@@ -240,6 +244,7 @@ const Map = () => {
           </Button>
         </div>
       </Modal>
+
       {isMapReady ? (
         <GoogleMap
           ref={mapNode}
