@@ -91,7 +91,7 @@ const UserForm = ({ closeModalForm }) => {
             >
               <option
                 disabled
-                selected
+                defaultValue
                 label="Please select a pick up station"
               />
               {pickupStations.map((station) => (

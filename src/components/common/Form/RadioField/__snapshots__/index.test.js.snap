@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`input snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="wrapper"
+  >
+    <input
+      class="radio"
+      id="cash"
+      name="paymentMethod"
+      type="radio"
+    />
+    <label
+      class="label"
+      for="cash"
+    >
+      cash
+    </label>
+  </div>
+</DocumentFragment>
+`;

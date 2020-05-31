@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`input snapshot 1`] = `
+<DocumentFragment>
+  <label
+    class="label"
+    for="station"
+  >
+    station
+  </label>
+  <select
+    class="select"
+    id="station"
+    name="station"
+  >
+    <option
+      disabled=""
+      label="Please select a pick up station"
+    />
+    <option
+      label="ahmed oraby"
+      value="ahmed oraby"
+    />
+    <option
+      label="almaza"
+      value="almaza"
+    />
+  </select>
+</DocumentFragment>
+`;

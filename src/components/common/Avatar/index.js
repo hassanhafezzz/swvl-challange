@@ -15,6 +15,7 @@ export default function Avatar({
 }) {
   return (
     <div
+      data-testid="user"
       className={cx('media', {
         booked: status === BOOKING_STATUS.BOOKED,
         missed: status === BOOKING_STATUS.MISSED,

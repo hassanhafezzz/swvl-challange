@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`add snapshot for user avatar 1`] = `
+<DocumentFragment>
+  <div
+    class="media booked"
+    data-testid="user"
+  >
+    <img
+      alt="Ahmed Ossama"
+      class="image"
+    />
+    <div
+      class="body"
+    >
+      <p
+        class="title"
+      >
+        Ahmed Ossama
+      </p>
+      <p>
+        <b>
+          Status
+        </b>
+         booked
+      </p>
+      <p>
+        <b>
+          Trips
+        </b>
+         210
+      </p>
+      <p>
+        <b>
+          From
+        </b>
+         almaza
+      </p>
+      <p>
+        <b>
+          To
+        </b>
+         city stars
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;

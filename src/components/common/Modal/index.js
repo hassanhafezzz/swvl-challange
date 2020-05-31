@@ -37,7 +37,7 @@ const Modal = memo(({ isOpen, title, closeModal, children }) => {
   return (
     isOpen &&
     createPortal(
-      <div className={cx('wrapper')}>
+      <div data-testId="modal" className={cx('wrapper')}>
         <div className={cx('content')}>
           <div className={cx('header')}>
             {title ? <p className={cx('title')}>{title}</p> : null}

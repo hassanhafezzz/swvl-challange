@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`add snapshot for header  1`] = `
+<DocumentFragment>
+  <header
+    class="header"
+  >
+    <h1
+      class="brand"
+    >
+      <a
+        href="/"
+      >
+        <span
+          class="visually-hidden"
+        >
+          swvl
+        </span>
+        <img
+          alt="swvl logo"
+          class="logo"
+          src="logo.png"
+        />
+      </a>
+    </h1>
+  </header>
+</DocumentFragment>
+`;
