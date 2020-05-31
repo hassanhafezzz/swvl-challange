@@ -48,7 +48,7 @@ const Booking = () => {
       >
         <UserForm closeModalForm={closeModal} />
       </Modal>
-      <section className={cx('container')}>
+      <section className={cx('container')} data-testid="booking">
         <div className={cx('heading')}>
           <h3 className={cx('title')}>
             Bookings{' '}

@@ -10,20 +10,18 @@ import Stats from './components/Stats';
 const App = () => {
   return (
     <StoreProvider>
+      <Header />
       <Main>
-        <Header />
-        <main role="main">
-          <Router>
-            <Switch>
-              <Route path="/stats">
-                <Stats />
-              </Route>
-              <Route exact path="/">
-                <Ride />
-              </Route>
-            </Switch>
-          </Router>
-        </main>
+        <Router>
+          <Switch>
+            <Route path="/stats">
+              <Stats />
+            </Route>
+            <Route exact path="/">
+              <Ride />
+            </Route>
+          </Switch>
+        </Router>
       </Main>
     </StoreProvider>
   );

@@ -33,7 +33,7 @@ const Info = () => {
         <RideForm closeModalForm={closeModal} />
       </Modal>
 
-      <section className={cx('container')}>
+      <section className={cx('container')} data-testid="info">
         <div className={cx('heading')}>
           <div>
             <h3 className={cx('title')}>

@@ -213,7 +213,7 @@ const Map = () => {
 
   const centerPoint = stations[Math.ceil(stations.length / 2) - 1];
   return (
-    <>
+    <div data-testid="map">
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <h4 className={cx('congrats')}>
           <span role="img" aria-label="congrats">
@@ -272,7 +272,7 @@ const Map = () => {
           <Markers />
         </GoogleMap>
       ) : null}
-    </>
+    </div>
   );
 };
 

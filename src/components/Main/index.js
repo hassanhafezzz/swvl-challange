@@ -11,5 +11,5 @@ export default function Wrapper({ children }) {
     );
   }, [state]);
 
-  return <>{children}</>;
+  return <main role="main">{children}</main>;
 }

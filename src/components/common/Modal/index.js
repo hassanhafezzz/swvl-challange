@@ -5,7 +5,9 @@ import styles from './styles.module.css';
 import Button, { BUTTON_VARIANT } from '../Button';
 
 const cx = classNames.bind(styles);
-const modalRoot = document.getElementById('modal');
+const modalRoot = document.createElement('div');
+modalRoot.setAttribute('id', 'modal');
+document.body.appendChild(modalRoot);
 
 const Modal = memo(({ isOpen, title, closeModal, children }) => {
   const el = document.createElement('div');
@@ -37,10 +39,14 @@ const Modal = memo(({ isOpen, title, closeModal, children }) => {
   return (
     isOpen &&
     createPortal(
-      <div data-testId="modal" className={cx('wrapper')}>
+      <div data-testid="modal" className={cx('wrapper')}>
         <div className={cx('content')}>
           <div className={cx('header')}>
-            {title ? <p className={cx('title')}>{title}</p> : null}
+            {title ? (
+              <p className={cx('title')} data-testid="modal-title">
+                {title}
+              </p>
+            ) : null}
             <Button
               onClick={closeModal}
               className={cx('close-icon')}
