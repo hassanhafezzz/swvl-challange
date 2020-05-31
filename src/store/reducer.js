@@ -20,7 +20,7 @@ import {
 } from '../constants';
 
 import users from '../data/users';
-import { getRandomArbitrary } from '../utils';
+import { getRandomArbitrary, getEta } from '../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -136,6 +136,8 @@ const reducer = (state, action) => {
     case UPDATE_STATIONS_DISTANCE_AND_ETA: {
       const directions = action.payload;
       const { legs } = directions.routes[0];
+      const { startedAt } = state.trip;
+
       const newStations = state.stations.map((station, i) => {
         if (i === 0) {
           return { ...station, distance: 0, eta: '' };
@@ -144,7 +146,12 @@ const reducer = (state, action) => {
           .slice(0, i)
           .reduce((acc, leg) => acc + leg.distance.value, 0);
 
-        const eta = legs[i - 1].duration.text;
+        const duration = legs
+          .slice(0, i)
+          .reduce((acc, leg) => acc + leg.duration.value * 1000, 0);
+
+        const eta = getEta(startedAt, duration);
+
         return { ...station, distance, eta };
       });
 

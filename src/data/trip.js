@@ -7,7 +7,7 @@ const trip = {
   duration: 0,
   fare: 55,
   distance: 13798,
-  startedAt: 0,
+  startedAt: '',
   start: stations[0].name,
   end: stations[stations.length - 1].name,
   driver: {

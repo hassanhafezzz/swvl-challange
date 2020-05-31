@@ -33,7 +33,7 @@ const Markers = () => {
         {trip.status === TRIP_IN_PROGRESS && distance > currentDistance ? (
           <InfoBox
             options={{
-              pixelOffset: new window.google.maps.Size(-55, 0),
+              pixelOffset: new window.google.maps.Size(-65, 2),
               closeBoxURL: '',
               enableEventPropagation: true,
             }}
@@ -43,6 +43,7 @@ const Markers = () => {
                 backgroundColor: '#fff',
                 padding: '5px 10px',
                 borderRadius: '10px 0px 10px 10px',
+                border: '1px solid #eee',
               }}
             >
               <div
