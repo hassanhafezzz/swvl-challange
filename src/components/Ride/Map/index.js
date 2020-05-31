@@ -13,7 +13,11 @@ import styles from './styles.module.css';
 import Modal from '../../common/Modal';
 import Button, { BUTTON_VARIANT } from '../../common/Button';
 import { Context } from '../../../store';
-import { TRIP_IN_PROGRESS, TRIP_NOT_STARTED } from '../../../constants';
+import {
+  TRIP_IN_PROGRESS,
+  TRIP_NOT_STARTED,
+  BUS_ICON_PATH,
+} from '../../../constants';
 import {
   setDirections,
   updateStationsDistanceAndEta,
@@ -24,11 +28,7 @@ import {
   endTrip,
 } from '../../../store/actions';
 
-import {
-  busIconPath,
-  getVisitedStations,
-  calcFullDistance,
-} from '../../../utils';
+import { getVisitedStations, calcFullDistance } from '../../../utils';
 
 import Markers from './Markers';
 import mapStyles from './mapStyles.json';
@@ -65,7 +65,7 @@ const Map = () => {
     const mapInstance = mapNode.current.context[MAP];
 
     const lineSymbol = {
-      path: busIconPath,
+      path: BUS_ICON_PATH,
       fillColor: '#f56970',
       fillOpacity: 1,
       strokeColor: '#222',
