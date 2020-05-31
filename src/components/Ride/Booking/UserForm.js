@@ -72,7 +72,7 @@ const UserForm = ({ closeModalForm }) => {
     >
       {({ isValid, values, setFieldValue }) => {
         const dropOffStations = stationsNames.slice(
-          stations.indexOf(values.pickupStation) + 1,
+          stationsNames.indexOf(values.pickupStation) + 1,
         );
 
         return (
