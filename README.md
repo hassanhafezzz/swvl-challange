@@ -16,7 +16,7 @@ A react app that simulates Swvl's ride tracking,
 - 🗺 The bus mimics the real movement on the map.
 - 👨🏻‍💻 Add booking with pre-filled input form with validation on each input.
 - ✨ Ability to fill all 12 seats on the bus with just one click.
-- ⌚️ Ability to control the time of the ride simulation.
+- ⌚️ Ability to control the time of the simulation.
 - 💃🏻 Real time update on bus passengers status upon arrival on every station.
 - 🕵🏻‍♂️ Reloading the browser doesn't affect the ride.
 - 🤝 Ability to reset and start all over again with new passengers.
@@ -52,7 +52,7 @@ This app is deployed using Netlify on https://hassan-swvl-challenge.netlify.app/
 
   `$ yarn install`
 
-- **Add env your google API key to the env** please check `.env`.
+- **Add your google API key to the env** please check `.env` file to see how.
 
 - **Start the server**
 
