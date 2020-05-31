@@ -52,6 +52,8 @@ This app is deployed using Netlify on https://hassan-swvl-challenge.netlify.app/
 
   `$ yarn install`
 
+- **Add env your google API key to the env** please check `.env`.
+
 - **Start the server**
 
   `$ yarn start`
