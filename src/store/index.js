@@ -5,7 +5,9 @@ import initialState from './initialState';
 export const Context = createContext(initialState);
 
 const Store = ({ children }) => {
-  const localState = JSON.parse(localStorage.getItem('__swvl__'));
+  const localState = JSON.parse(
+    localStorage.getItem(process.env.REACT_APP_CACHE_KEY),
+  );
   const [state, dispatch] = useReducer(reducer, localState || initialState);
 
   return (

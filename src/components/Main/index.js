@@ -5,7 +5,10 @@ export default function Wrapper({ children }) {
   const [state] = useContext(Context);
 
   useEffect(() => {
-    localStorage.setItem('__swvl__', JSON.stringify(state));
+    localStorage.setItem(
+      process.env.REACT_APP_CACHE_KEY,
+      JSON.stringify(state),
+    );
   }, [state]);
 
   return <>{children}</>;
