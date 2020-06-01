@@ -6,7 +6,8 @@ import {
   RESET_TRIP,
   SET_STATIONS,
   SET_DIRECTION,
-  UPDATE_STATIONS_DISTANCE_AND_ETA,
+  UPDATE_STATIONS_DISTANCES,
+  UPDATE_STATIONS_ETAS,
   UPDATE_STATION_ARRIVAL_STATUS,
   UPDATE_BOOKER_STATUS,
   UPDATE_CURRENT_DISTANCE,
@@ -48,9 +49,16 @@ export const setDirections = (payload) => {
   };
 };
 
-export const updateStationsDistanceAndEta = (payload) => {
+export const updateStationsDistances = (payload) => {
   return {
-    type: UPDATE_STATIONS_DISTANCE_AND_ETA,
+    type: UPDATE_STATIONS_DISTANCES,
+    payload,
+  };
+};
+
+export const updateStationsEtas = (payload) => {
+  return {
+    type: UPDATE_STATIONS_ETAS,
     payload,
   };
 };

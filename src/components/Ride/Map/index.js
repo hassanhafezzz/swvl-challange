@@ -20,7 +20,8 @@ import {
 } from '../../../constants';
 import {
   setDirections,
-  updateStationsDistanceAndEta,
+  updateStationsDistances,
+  updateStationsEtas,
   updateStationArrivalStatus,
   updateCurrentDistance,
   updateBookerStatus,
@@ -92,7 +93,7 @@ const Map = () => {
   };
 
   const moveBus = () => {
-    dispatch(updateStationsDistanceAndEta(directions));
+    dispatch(updateStationsEtas(directions));
     if (!movementPath) {
       movementPath = drawMovementPathOnMap(directions);
     }
@@ -181,6 +182,7 @@ const Map = () => {
       async (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
           await dispatch(setDirections(result));
+          await dispatch(updateStationsDistances(result));
           if (
             !movementPath ||
             (movementPath && trip.status !== TRIP_IN_PROGRESS)

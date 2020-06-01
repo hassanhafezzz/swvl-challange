@@ -11,7 +11,8 @@ import {
   TRIP_COMPLETED,
   SET_DIRECTION,
   SET_STATIONS,
-  UPDATE_STATIONS_DISTANCE_AND_ETA,
+  UPDATE_STATIONS_DISTANCES,
+  UPDATE_STATIONS_ETAS,
   UPDATE_STATION_ARRIVAL_STATUS,
   UPDATE_CURRENT_DISTANCE,
   BOOKING_STATUS,
@@ -133,26 +134,42 @@ const reducer = (state, action) => {
       };
     }
 
-    case UPDATE_STATIONS_DISTANCE_AND_ETA: {
+    case UPDATE_STATIONS_DISTANCES: {
+      const directions = action.payload;
+      const { legs } = directions.routes[0];
+
+      const newStations = state.stations.map((station, i) => {
+        if (i === 0) {
+          return { ...station, distance: 0 };
+        }
+        const distance = legs
+          .slice(0, i)
+          .reduce((acc, leg) => acc + leg.distance.value, 0);
+
+        return { ...station, distance };
+      });
+
+      return {
+        ...state,
+        stations: newStations,
+      };
+    }
+    case UPDATE_STATIONS_ETAS: {
       const directions = action.payload;
       const { legs } = directions.routes[0];
       const { startedAt } = state.trip;
 
       const newStations = state.stations.map((station, i) => {
         if (i === 0) {
-          return { ...station, distance: 0, eta: '' };
+          return { ...station, eta: '' };
         }
-        const distance = legs
-          .slice(0, i)
-          .reduce((acc, leg) => acc + leg.distance.value, 0);
-
         const duration = legs
           .slice(0, i)
           .reduce((acc, leg) => acc + leg.duration.value * 1000, 0);
 
         const eta = getEta(startedAt, duration);
 
-        return { ...station, distance, eta };
+        return { ...station, eta };
       });
 
       return {
