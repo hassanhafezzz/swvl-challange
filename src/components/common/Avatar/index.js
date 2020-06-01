@@ -23,7 +23,7 @@ export default function Avatar({
         completed: status === BOOKING_STATUS.COMPLETED,
       })}
     >
-      <img className={cx('image')} src={img} alt={name} />
+      <img className={cx('image')} src={img} alt={name} loading="lazy" />
       <div className={cx('body')}>
         <p className={cx('title')}>{name}</p>
         <p>
